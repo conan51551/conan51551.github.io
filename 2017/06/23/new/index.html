@@ -118,7 +118,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/23/new/index.html">
 <meta property="og:site_name" content="fjs&#39;s blog">
 <meta property="og:description" content="语言基础 大前端开发者需要了解的基础编译原理和语言知识 原创 2017-06-24 bestswifter bestswifter 在阅读本文前，不妨思考一下这几个问题，如果没有头绪，建议看完文章以后再思考一遍。如果觉得答案显而易见，恭喜你，这篇文章并非为你准备的:什么是编译器，它以什么为分界线，分为前端和后端？Java 是编译型语言还是解释型语言，Python 呢？C 语言的编译器也是 C 语">
-<meta property="og:updated_time" content="2017-06-27T02:00:43.000Z">
+<meta property="og:updated_time" content="2017-06-27T02:09:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大前端开发者需要了解的基础编译原理和语言知识">
 <meta name="twitter:description" content="语言基础 大前端开发者需要了解的基础编译原理和语言知识 原创 2017-06-24 bestswifter bestswifter 在阅读本文前，不妨思考一下这几个问题，如果没有头绪，建议看完文章以后再思考一遍。如果觉得答案显而易见，恭喜你，这篇文章并非为你准备的:什么是编译器，它以什么为分界线，分为前端和后端？Java 是编译型语言还是解释型语言，Python 呢？C 语言的编译器也是 C 语">
@@ -361,18 +361,16 @@
         <h3 id="语言基础"><a href="#语言基础" class="headerlink" title="语言基础"></a>语言基础</h3><hr>
 <p>大前端开发者需要了解的基础编译原理和语言知识</p>
 <p>原创 2017-06-24 bestswifter bestswifter</p>
-<p>在阅读本文前，不妨思考一下这几个问题，如果没有头绪，建议看完文章以后再思考一遍。如果觉得答案显而易见，恭喜你，这篇文章并非为你准备的:<br>什么是编译器，它以什么为分界线，分为前端和后端？<br>Java 是编译型语言还是解释型语言，Python 呢？<br>C 语言的编译器也是 C 语言，那它怎么被编译的？<br>目标文件的格式是什么样的，段表、符号表、重定位表有什么作用？<br>Swift 是静态语言，为什么还有运行时库？<br>什么是 ABI，ABI 不稳定有什么问题？<br>什么是 WebAssembly，为什么要推出这门技术，用 C++ 代替 JavaScript 可行么？<br>JavaScript 和 DOM API 是什么关系，JavaScript 可以读写文件么？<br>C++ 代码可以自动转换成 Java 代码么，任意两种语言是否可以互转？<br>为什么说 Python 是胶水语言，它可以用来开发 iOS/Android 么？<br>编译原理</p>
-<p>就像数学是一个公理体系，从简单的公理就能推导出各种高阶公式一样，我们从最基本的 C 语言和编译说起。</p>
+<p>在阅读本文前，不妨思考一下这几个问题，如果没有头绪，建议看完文章以后再思考一遍。如果觉得答案显而易见，恭喜你，这篇文章并非为你准备的:<br>什么是编译器，它以什么为分界线，分为前端和后端？<br>Java 是编译型语言还是解释型语言，Python 呢？<br>C 语言的编译器也是 C 语言，那它怎么被编译的？<br>目标文件的格式是什么样的，段表、符号表、重定位表有什么作用？<br>Swift 是静态语言，为什么还有运行时库？<br>什么是 ABI，ABI 不稳定有什么问题？<br>什么是 WebAssembly，为什么要推出这门技术，用 C++ 代替 JavaScript 可行么？<br>JavaScript 和 DOM API 是什么关系，JavaScript 可以读写文件么？<br>C++ 代码可以自动转换成 Java 代码么，任意两种语言是否可以互转？<br>为什么说 Python 是胶水语言，它可以用来开发 iOS/Android 么？</p>
+<h4 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h4><p>就像数学是一个公理体系，从简单的公理就能推导出各种高阶公式一样，我们从最基本的 C 语言和编译说起。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> a = <span class="built_in">strlen</span>(<span class="string">"Hello world"</span>);  <span class="comment">// 字符串的长度是 11</span></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>相关的介绍编译过程的文章很多，读者应该都非常熟悉了，整个流程包括预处理、词法分析、语法分析、生成中间代码，生成目标代码，汇编，链接 等。已有的文章大多分析了每一步的逻辑，但很少谈实现思路，我会尽量用简单的语言来描述每一步的实现思路，相信这样有助于加深记忆。由于主要谈的概念和思路，难免会有一些不够准确的抽象，读者学会抓重点就行。</p>
-<p>预处理是一个独立的模块，它放在最后介绍，我们先看词法分析。</p>
-<p>词法分析</p>
-<p>最先登场的是编译器，它负责前五个步骤，也就是说编译器的输入是源代码，输出是中间代码。</p>
+<p>相关的介绍编译过程的文章很多，读者应该都非常熟悉了，整个流程包括<strong>预处理、词法分析、语法分析、生成中间代码，生成目标代码，汇编，链接</strong> 等。已有的文章大多分析了每一步的逻辑，但很少谈实现思路，我会尽量用简单的语言来描述每一步的实现思路，相信这样有助于加深记忆。由于主要谈的概念和思路，难免会有一些不够准确的抽象，读者学会抓重点就行。</p>
+<p><strong><em>预处理是一个独立的模块，它放在最后介绍，我们先看词法分析。</em></strong></p>
+<h4 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h4><p>最先登场的是编译器，它负责前五个步骤，也就是说编译器的输入是源代码，输出是中间代码。</p>
 <p>编译器不能像人一样，一眼就看明白源代码的内容，它只能比较傻的逐个单词分析。词法分析要做的就是把源代码分割开，形成若干个单词。这个过程并不像想象的那么简单。比如举几个例子:<br><code>int t</code>表示一个整数，而 intt 只是一个变量名。<code>int a()</code> 表示一个函数而非整数 a，<code>int a ()</code> 也是一个函数。<br>a = 没有具体价值，它可以是一个赋值语句，还可以是 a == 1 的前缀，表示一个判断。<br>词法分析的主要难点在于，前缀无法决定一个完整字符串的含义，通常需要看完整句以后才知道每个单词的具体含义。同时，C 语言的语法也不简单，各种关键字，括号，逗号，语法等等都会给词法分析的实现增加难度。</p>
 <p>词法分析的主要实现原理是状态机，它逐个读取字符，然后根据读到的字符的特点转换状态。比如这是 GCC 的词法分析状态机(引用自《编译系统透视》):</p>
 <p>如果自己实现的话，思路也不难。外面包一个循环，然后各种 switch…case 就完事了。词法分析应该算是最简单的一节。</p>
-<p>语法分析</p>
-<p>经过词法分析以后，编译器已经知道了每个单词，但这些单词组合起来表示的语法还不清楚。一个简单的思路是模板匹配，比如有这样的语句:</p>
+<h4 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h4><p>经过词法分析以后，编译器已经知道了每个单词，但这些单词组合起来表示的语法还不清楚。一个简单的思路是模板匹配，比如有这样的语句:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% codeblock int a = 10; %&#125;</div></pre></td></tr></table></figure>
 <p>它其实表示了这么一种通用的语法格式:<br>类型 变量名 = 常量;</p>
 <p>所以 <code>int a = 10</code>; 当然可以匹配上这种模式。同理，它不可能匹配 类型 函数名(参数); 这种函数定义模式，因为两者结构不一致，等号无法被匹配。</p>
@@ -387,8 +385,7 @@
 <p>成功解析语法以后，我们会得到抽象语法树(AST: Abstract Syntax Tree)。以这段代码为例:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> c = <span class="number">0</span>;</div><div class="line">    c = a + b;</div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>它的语法树如下:</p>
 <p>语法树将字符串格式的源代码转化为树状的数据结构，更容易被计算机理解和处理。但它距离中间代码还有一定的距离。</p>
-<p>生成中间代码</p>
-<p>以 GCC 为例，生成中间代码可以分为三个步骤:<br>语法树转高端 gimple<br>高端 gimple 转低端 gimple<br>低端 gimple 经过 cfa 转 ssa 再转中间代码<br>简单的介绍一下每一步都做了什么。</p>
+<h4 id="生成中间代码"><a href="#生成中间代码" class="headerlink" title="生成中间代码"></a>生成中间代码</h4><p>以 GCC 为例，生成中间代码可以分为三个步骤:<br>语法树转高端 gimple<br>高端 gimple 转低端 gimple<br>低端 gimple 经过 cfa 转 ssa 再转中间代码<br>简单的介绍一下每一步都做了什么。</p>
 <p>语法树转高端 gimple</p>
 <p>这一步主要是处理寄存器和栈，比如<code>c = a + b</code>并没有直接的汇编代码和它对应，一般来说需要把 a + b 的结果保存到寄存器中，然后再把寄存器赋值给 c。所以这一步如果用 C 语言来表示其实是:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> temp = a + b; <span class="comment">// temp 其实是寄存器</span></div><div class="line">c =  temp;</div></pre></td></tr></table></figure>
@@ -406,31 +403,26 @@
 <p>生成中间代码是非常重要的一步，一方面它和语言无关，也和 CPU 与具体实现无关。可以理解为中间代码是一种非常抽象，又非常普适的代码。它客观中立的描述了代码要做的事情，如果用中文、英文来分别表示 C 和 Java 的话，中间码某种意义上可以被理解为世界语。</p>
 <p>另一方面，中间代码是编译器前端和后端的分界线。编译器前端负责把源码转换成中间代码，编译器后端负责把中间代码转换成汇编代码。</p>
 <p>LLVM IR 是一种中间代码，它长成这样:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">define i32 @square_unsigned(i32 %a) &#123;</div><div class="line">  %1 = mul i32 %a, %a</div><div class="line">  ret i32 %1</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>生成目标代码</p>
-<p>目标代码也可以叫做汇编代码。由于中间代码已经非常接近于实际的汇编代码，它几乎可以直接被转化。主要的工作量在于兼容各种 CPU 以及填写模板。在最终生成的汇编代码中，不仅有汇编命令，也有一些对文件的说明。比如:</p>
+<h4 id="生成目标代码"><a href="#生成目标代码" class="headerlink" title="生成目标代码"></a>生成目标代码</h4><p>目标代码也可以叫做汇编代码。由于中间代码已经非常接近于实际的汇编代码，它几乎可以直接被转化。主要的工作量在于兼容各种 CPU 以及填写模板。在最终生成的汇编代码中，不仅有汇编命令，也有一些对文件的说明。比如:</p>
 <pre><code>.file       &quot;test.c&quot;      # 文件名称
 .global     m             # 全局变量 m
 .data                     # 数据段声明
 .align      4             # 4 字节对齐
 .type       m, @objc
 .size       m, 4
-</code></pre><p>m:<br>    .long       10            # m 的值是 10<br>    .text<br>    .global     main<br>    .type       main, @function<br>main:<br>    pushl   %ebp<br>    movl    %esp,   %ebp<br>    …<br>汇编</p>
-<p>汇编器会接收汇编代码，将它转换成二进制的机器码，生成目标文件(后缀是 .o)，机器码可以直接被 CPU 识别并执行。从目标代码可以猜出来，最终的目标文件(机器码)也是分段的，这主要有以下三个原因:<br>分段可以将数据和代码区分开。其中代码只读，数据可写，方便权限管理，避免指令被改写，提高安全性。<br>现代 CPU 一般有自己的数据缓存和指令缓存，区分存储有助于提高缓存命中率。<br>当多个进程同时运行时，他们的指令可以被共享，这样能节省内存。<br>段分离我们并不遥远，比如命令行中的 objcopy 可以自行添加自定义的段名，C 语言的 <code>__attribute((section(段名)))__</code> 可以把变量定义在某个特定名称的段中。</p>
-<p>对于一个目标文件来说，文件的最开头(也叫作 ELF 头)记录了目标文件的基本信息，程序入口地址，以及段表的位置，相当于是对文件的整体描述。接下来的重点是段表，它记录了每个段的段名，长度，偏移量。比较常用的段有:<br>.strtab 段: 字符串长度不定，分开存放浪费空间(因为需要内存对齐)，因此可以统一放到字符串表(也就是 .strtab 段)中进行管理。字符串之间用\0 分割，所以凡是引用字符串的地方用一个数字就可以代表。<br>.symtab: 表示符号表。符号表统一管理所有符号，比如变量名，函数名。符号表可以理解为一个表格，每行都有符号名(数字)、符号类型和符号值(存储地址)<br>.rel 段: 它表示一系列重定位表。这个表主要在链接时用到，下面会详细解释。<br>链接</p>
-<p>在一个目标文件中，不可能所有变量和函数都定义在文件内部。比如 strlen 函数就是一个被调用的外部函数，此时就需要把 main.o 这个目标文件和包含了 strlen函数实现的目标文件链接起来。我们知道函数调用对应到汇编其实是 jump 指令，后面写上被调用函数的地址，但在生成 main.o 的过程中，strlen() 函数的地址并不知道，所以只能先用 0 来代替，直到最后链接时，才会修改成真实的地址。</p>
+</code></pre><p>m:<br>    .long       10            # m 的值是 10<br>    .text<br>    .global     main<br>    .type       main, @function<br>main:<br>    pushl   %ebp<br>    movl    %esp,   %ebp<br>    …</p>
+<h4 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h4><p>汇编器会接收汇编代码，将它转换成二进制的机器码，生成目标文件(后缀是 .o)，机器码可以直接被 CPU 识别并执行。从目标代码可以猜出来，最终的目标文件(机器码)也是分段的，这主要有以下三个原因:<br>分段可以将数据和代码区分开。其中代码只读，数据可写，方便权限管理，避免指令被改写，提高安全性。<br>现代 CPU 一般有自己的数据缓存和指令缓存，区分存储有助于提高缓存命中率。<br>当多个进程同时运行时，他们的指令可以被共享，这样能节省内存。<br>段分离我们并不遥远，比如命令行中的 objcopy 可以自行添加自定义的段名，C 语言的 <code>__attribute((section(段名)))__</code> 可以把变量定义在某个特定名称的段中。</p>
+<p>对于一个目标文件来说，文件的最开头(也叫作 ELF 头)记录了目标文件的基本信息，程序入口地址，以及段表的位置，相当于是对文件的整体描述。接下来的重点是段表，它记录了每个段的段名，长度，偏移量。比较常用的段有:<br>.strtab 段: 字符串长度不定，分开存放浪费空间(因为需要内存对齐)，因此可以统一放到字符串表(也就是 .strtab 段)中进行管理。字符串之间用\0 分割，所以凡是引用字符串的地方用一个数字就可以代表。<br>.symtab: 表示符号表。符号表统一管理所有符号，比如变量名，函数名。符号表可以理解为一个表格，每行都有符号名(数字)、符号类型和符号值(存储地址)<br>.rel 段: 它表示一系列重定位表。这个表主要在链接时用到，下面会详细解释。</p>
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p>在一个目标文件中，不可能所有变量和函数都定义在文件内部。比如 strlen 函数就是一个被调用的外部函数，此时就需要把 main.o 这个目标文件和包含了 strlen函数实现的目标文件链接起来。我们知道函数调用对应到汇编其实是 jump 指令，后面写上被调用函数的地址，但在生成 main.o 的过程中，strlen() 函数的地址并不知道，所以只能先用 0 来代替，直到最后链接时，才会修改成真实的地址。</p>
 <p>链接器就是靠着重定位表来知道哪些地方需要被重定位的。每个可能存在重定位的段都会有对应的重定位表。在链接阶段，链接器会根据重定位表中，需要重定位的内容，去别的目标文件中找到地址并进行重定位。</p>
 <p>有时候我们还会听到动态链接这个名词，它表示重定位发生在运行时而非编译后。动态链接可以节省内存，但也会带来加载的性能问题，这里不详细解释，感兴趣的读者可以阅读《程序员的自我修养》这本书。</p>
-<p>预处理</p>
-<p>最后简单描述一下预处理。预处理主要是处理一些宏定义，比如#define、#include、#if 等。预处理的实现有很多种，有的编译器会在词法分析前先进行预处理，替换掉所有 # 开头的宏，而有的编译器则是在词法分析的过程中进行预处理。当分析到 # 开头的单词时才进行替换。虽然先预处理再词法分析比较符合直觉，但在实际使用中，GCC 使用的却是一边词法分析，一边预处理的方案。</p>
-<p>编译 VS 解释</p>
-<p>总结一下，对于 C 语言来说，从源码到运行结果大致上需要经历编译、汇编和链接三个步骤。编译器接收源代码，输出目标代码(也就是汇编代码)，汇编器接收汇编代码，输出由机器码组成的目标文件(二进制格式，.o 后缀)，最后链接器将各个目标文件链接起来，执行重定位，最终生成可执行文件。</p>
+<h4 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h4><p>最后简单描述一下预处理。预处理主要是处理一些宏定义，比如#define、#include、#if 等。预处理的实现有很多种，有的编译器会在词法分析前先进行预处理，替换掉所有 # 开头的宏，而有的编译器则是在词法分析的过程中进行预处理。当分析到 # 开头的单词时才进行替换。虽然先预处理再词法分析比较符合直觉，但在实际使用中，GCC 使用的却是一边词法分析，一边预处理的方案。</p>
+<h5 id="编译-VS-解释"><a href="#编译-VS-解释" class="headerlink" title="编译 VS 解释"></a>编译 VS 解释</h5><p>总结一下，对于 C 语言来说，从源码到运行结果大致上需要经历编译、汇编和链接三个步骤。编译器接收源代码，输出目标代码(也就是汇编代码)，汇编器接收汇编代码，输出由机器码组成的目标文件(二进制格式，.o 后缀)，最后链接器将各个目标文件链接起来，执行重定位，最终生成可执行文件。</p>
 <p>编译器以中间代码为界限，又可以分前端和后端。比如 clang 就是一个前端工具，而 LLVM 则负责后端处理。另一个知名工具 GCC(GNU Compile Collection)则是一个套装，包揽了前后端的所有任务。前端主要负责预处理、词法分析、语法分析，最终生成语言无关的中间代码。后端主要负责目标代码的生成和优化。</p>
 <p>关于编译原理的基础知识虽然枯燥，但掌握这些知识有助于我们理解一些有用的，但不太容易理解的概念。接下来，我们简单看一下别的语言是如何运行的。</p>
-<p>Java</p>
-<p>在 Java 代码的执行过程中，可以简单分为编译和执行两步。Java 的编译器首先会把 .java 格式的源码编译成 .class 格式的字节码。字节码对应到 C 语言的编译体系中就是中间码，Java 虚拟机执行这些中间码得到最终结果。</p>
+<h5 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h5><p>在 Java 代码的执行过程中，可以简单分为编译和执行两步。Java 的编译器首先会把 .java 格式的源码编译成 .class 格式的字节码。字节码对应到 C 语言的编译体系中就是中间码，Java 虚拟机执行这些中间码得到最终结果。</p>
 <p>回忆一下上文对中间码的解释，一方面它与语言无关，仅仅描述客观事实。另一方面它和目标代码的差距并不大，已经包括了对寄存器和栈的处理，仅仅是抽象了 CPU 架构而已，只要把它具体化成各个平台下的目标代码，就可以交给汇编器了。</p>
-<p>解释型语言</p>
-<p>一般来说我们也把解释型语言叫做脚本语言，比如 Python、Ruby、JavaScript 等等。这类语言的特点是，不需要编译，直接由解释器执行。换言之，运行流程变成了:<br>源代码 -&gt; 解释器 -&gt; 运行结果</p>
+<h5 id="解释型语言"><a href="#解释型语言" class="headerlink" title="解释型语言"></a>解释型语言</h5><p>一般来说我们也把解释型语言叫做脚本语言，比如 Python、Ruby、JavaScript 等等。这类语言的特点是，不需要编译，直接由解释器执行。换言之，运行流程变成了:<br>源代码 -&gt; 解释器 -&gt; 运行结果</p>
 <p>需要注意的是，这里的解释器只是一个黑盒，它的实现方式可以是多种多样的。举个例子，它的实现可以非常类似于 Java 的执行过程。解释器里面可以包含一个编译器和虚拟机，编译器把源码转化成 AST 或者字节码(中间代码)然后交给虚拟机执行，比如 Ruby 1.9 以后版本的官方实现就是这个思路。</p>
 <p>至于虚拟机，它并不是什么黑科技，它的内部可以编译执行，也可以解释执行。如果是编译执行，那么它会把字节码编译成当前 CPU 下的机器码然后统一执行。如果是解释执行，它会逐条翻译字节码。</p>
 <p>有意思的是，如果虚拟机是编译执行的，那么这套流程和 C 语言几乎一样，都满足下面这个流程:<br>源代码 -&gt; 中间代码 -&gt; 目标代码 -&gt; 运行结果</p>
@@ -447,22 +439,18 @@
 <p>以上逻辑描述起来比较绕，但我想多读几遍应该可以理解。如果实在不理解也没关系，我们只要明白 C 语言可以自举是因为它可以编译成二进制机器码，只要用低级语言生成这个机器码，就不再需要低级语言了，因为机器码可以直接被 CPU 执行。</p>
 <p>从这个角度来看，解释型语言是不可能自举的。以 Python 为例，自举要求它能用 Python 语言写出来 Python 的解释器，然而这个解释器如何运行呢，最终还是需要一个解释器。而解释器体系下， Python 都是从源码经过解释器执行，又不能留下什么可以直接被硬件执行的二进制形式的解释器文件，自然是没办法自举的。然而，就像前面说的，Python 完全可以实现一个编译器，这种情况下它就是可以自举的。</p>
 <p>所以一门语言能不能自举，主要取决于它的实现形式能否被编译并留下二进制格式的可执行文件。</p>
-<p>运行时</p>
-<p>本文的读者如果是使用 Objective-C 的 iOS 开发者，想必都有过在面试时被 runtime 支配的恐惧。然而，runtime 并非是 Objective-C 的专利，绝大多数语言都有这个概念。所以有人说 Objective-C 具有动态性是因为它有 runtime，这种说法并不准确，我觉得要把 Objective-C 的 runtime 和一般意义的运行时库区分开，认识到它仅仅是运行时库的一个组成部分，同时还是要深入到方法调用的层面来谈。</p>
-<p>运行时库的基本概念</p>
-<p>以 C 语言为例，有非常多的操作最终都依赖于 glibc 这个动态链接库。包括但不限于字符串处理(strlen、strcpy)、信号处理、socket、线程、IO、动态内存分屏(malloc)等等。这一点很好理解，如果回忆一下之前编译器的工作原理，我们会发现它仅仅是处理了语言的语法，比如变量定义，函数声明和调用等等。至于语言的功能， 比如内存管理，內建的类型，一些必要功能的实现等等。如果要对运行时库进行分类，大概有两类。一种是语言自身功能的实现，比如一些內建类型，内置的函数；另一种则是语言无关的基础功能，比如文件 IO，socket 等等。</p>
+<h5 id="运行时"><a href="#运行时" class="headerlink" title="运行时"></a>运行时</h5><p>本文的读者如果是使用 Objective-C 的 iOS 开发者，想必都有过在面试时被 runtime 支配的恐惧。然而，runtime 并非是 Objective-C 的专利，绝大多数语言都有这个概念。所以有人说 Objective-C 具有动态性是因为它有 runtime，这种说法并不准确，我觉得要把 Objective-C 的 runtime 和一般意义的运行时库区分开，认识到它仅仅是运行时库的一个组成部分，同时还是要深入到方法调用的层面来谈。</p>
+<h5 id="运行时库的基本概念"><a href="#运行时库的基本概念" class="headerlink" title="运行时库的基本概念"></a>运行时库的基本概念</h5><p>以 C 语言为例，有非常多的操作最终都依赖于 glibc 这个动态链接库。包括但不限于字符串处理(strlen、strcpy)、信号处理、socket、线程、IO、动态内存分屏(malloc)等等。这一点很好理解，如果回忆一下之前编译器的工作原理，我们会发现它仅仅是处理了语言的语法，比如变量定义，函数声明和调用等等。至于语言的功能， 比如内存管理，內建的类型，一些必要功能的实现等等。如果要对运行时库进行分类，大概有两类。一种是语言自身功能的实现，比如一些內建类型，内置的函数；另一种则是语言无关的基础功能，比如文件 IO，socket 等等。</p>
 <p>由于每个程序都依赖于运行时库，这些库一般都是动态链接的，比如 C 语言的 (g)libc。这样一来，运行时库可以存储在操作系统中，节省内存占用空间和应用程序大小。</p>
 <p>对于 Java 语言来说，它的垃圾回收功能，文件 IO 等都是在虚拟机中实现，并提供给 Java 层调用。从这个角度来看，虚拟机/解释器也可以被看做语言的运行时环境(库)。</p>
-<p>swift 运行时库</p>
-<p>经过这样的解释，相信 swift 的运行时库就很容易理解了。一方面，swift 是绝对的静态语言，另一方面，swift 毫无疑问的带有自己的运行时库。举个最简单的例子，如果阅读 swift 源码就会发现某些类型，比如字符串(String)，或者数组，再或者某些函数(print)都是用 swift 实现的，这些都是 swift 运行时库的一部分。按理说，运行时库应该内置于操作系统中并且和应用程序动态链接，然而坑爹的 Swift 在本文写作之时依然没有稳定 ABI，导致每个程序都必须自带运行时库，这也就是为什么目前 swift 开发的 app 普遍会增加几 Mb 包大小的原因。</p>
+<h5 id="swift-运行时库"><a href="#swift-运行时库" class="headerlink" title="swift 运行时库"></a>swift 运行时库</h5><p>经过这样的解释，相信 swift 的运行时库就很容易理解了。一方面，swift 是绝对的静态语言，另一方面，swift 毫无疑问的带有自己的运行时库。举个最简单的例子，如果阅读 swift 源码就会发现某些类型，比如字符串<code>(String)</code>，或者数组，再或者某些函数<code>(print)</code>都是用 swift 实现的，这些都是 swift 运行时库的一部分。按理说，运行时库应该内置于操作系统中并且和应用程序动态链接，然而坑爹的 Swift 在本文写作之时依然没有稳定 ABI，导致每个程序都必须自带运行时库，这也就是为什么目前 swift 开发的 app 普遍会增加几 Mb 包大小的原因。</p>
 <p>说到 ABI，它其实就是一个编译后的 API。简单来说，API 是描述了在应用程序级别，模块之间的调用约定。比如某个模块想要调用另一个模块的功能，就必须根据被调用模块提供的 API 来调用，因为 API 中规定了方法名、参数和返回结果的类型。而当源码被编译成二进制文件后，它们之间的调用也存在一些规则和约定。</p>
 <p>比如模块 A 有两个整数 a 和 b，它们的内存布局如下:</p>
 <p>模块 A<br>初始地址<br>a<br>b<br>这时候别的模块调用 A 模块的 b 变量，可以通过初始地址加偏移量的方式进行。</p>
 <p>如果后来模块 A 新增了一个整数 c，它的内存布局可能会变成:</p>
 <p>模块 A<br>初始地址<br>c<br>a<br>b<br>如果调用方还是使用相同的偏移量，可以想见，这次拿到的就是变量 a 了。因此，每当模块 A 有更新，所有依赖于模块 A 的模块都必须重新编译才能正确工作。如果这里的模块 A 是 swift 的运行时库，它内置于操作系统并与其他模块(应用程序)动态链接会怎么样呢？结果就是每次更新系统后，所有的 app 都无法打开。显然这是无法接受的。</p>
 <p>当然，ABI 稳定还包括其他的一些要求，比如调用和被调用者遵守相同的调用约定(参数和返回值如何传递)等。</p>
-<p>JavaScript 那些事</p>
-<p>我们继续刚才有关运行时的话题，先从 JavaScript 的运行时聊起，再介绍 JavaScript 的相关知识。</p>
+<h5 id="JavaScript-那些事"><a href="#JavaScript-那些事" class="headerlink" title="JavaScript 那些事"></a>JavaScript 那些事</h5><p>我们继续刚才有关运行时的话题，先从 JavaScript 的运行时聊起，再介绍 JavaScript 的相关知识。</p>
 <p>JavaScript 是如何运行的</p>
 <p>JavaScript 和其他语言，无论是 C 语言，还是 Python 这样的脚本语言，最大的区别在于 JavaScript 的宿主环境比较奇怪，一般来说是浏览器。</p>
 <p>无论是 C 还是 Python，他们都有一个编译器/解释器运行在操作系统上，直接把源码转换成机器码。而 JavaScript 的解释器一般内置在浏览器中，比如 Chrome 就有一个 V8 引擎可以解析并执行 JavaScript 代码。因此 JavaScript 的能力实际上会受到宿主环境的影响，有一些限制和加强。</p>
@@ -684,7 +672,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#语言基础"><span class="nav-number">1.</span> <span class="nav-text">语言基础</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#语言基础"><span class="nav-number">1.</span> <span class="nav-text">语言基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编译原理"><span class="nav-number">1.1.</span> <span class="nav-text">编译原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#词法分析"><span class="nav-number">1.2.</span> <span class="nav-text">词法分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语法分析"><span class="nav-number">1.3.</span> <span class="nav-text">语法分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成中间代码"><span class="nav-number">1.4.</span> <span class="nav-text">生成中间代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成目标代码"><span class="nav-number">1.5.</span> <span class="nav-text">生成目标代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#汇编"><span class="nav-number">1.6.</span> <span class="nav-text">汇编</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接"><span class="nav-number">1.7.</span> <span class="nav-text">链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#预处理"><span class="nav-number">1.8.</span> <span class="nav-text">预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#编译-VS-解释"><span class="nav-number">1.8.1.</span> <span class="nav-text">编译 VS 解释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java"><span class="nav-number">1.8.2.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解释型语言"><span class="nav-number">1.8.3.</span> <span class="nav-text">解释型语言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#运行时"><span class="nav-number">1.8.4.</span> <span class="nav-text">运行时</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#运行时库的基本概念"><span class="nav-number">1.8.5.</span> <span class="nav-text">运行时库的基本概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#swift-运行时库"><span class="nav-number">1.8.6.</span> <span class="nav-text">swift 运行时库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JavaScript-那些事"><span class="nav-number">1.8.7.</span> <span class="nav-text">JavaScript 那些事</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
