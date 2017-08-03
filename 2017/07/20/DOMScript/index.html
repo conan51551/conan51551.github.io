@@ -95,7 +95,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="sass," />
+  <meta name="keywords" content="optimize," />
 
 
 
@@ -111,20 +111,17 @@
 
 
 
-<meta name="description" content="sass1--watch style.scss:style.css 通过命令行及时更改scss对应的css  @mixin box-shadow($shadow…) {  @if length($shadow) &amp;gt;= 1 {    @include prefixer(box-shadow, $shadow);  } @else{    $shadow:0 0 4px rgba(0,0,0,.">
-<meta name="keywords" content="sass">
+<meta name="description" content="DOM编程DOM（文档对象模型）是独立于语言的。浏览器通常把DOM与js分开实现。 DOM的访问与修改尽量将运算放在js这一端处理 innerHTML和DOM方法修改页面区域的最佳方案究竟是用非标准但支持良好的innerHTML，还是用原生DOM的方法？在性能上两者相差无几，但是从代码量上分析，推荐使用innerHTML。 节点克隆使用克隆已有元素，更新页面内容element.cloneNode(">
+<meta name="keywords" content="optimize">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sass">
-<meta property="og:url" content="http://yoursite.com/2017/06/23/sass/index.html">
+<meta property="og:title" content="DOM编程">
+<meta property="og:url" content="http://yoursite.com/2017/07/20/DOMScript/index.html">
 <meta property="og:site_name" content="fjs&#39;s blog">
-<meta property="og:description" content="sass1--watch style.scss:style.css 通过命令行及时更改scss对应的css  @mixin box-shadow($shadow…) {  @if length($shadow) &amp;gt;= 1 {    @include prefixer(box-shadow, $shadow);  } @else{    $shadow:0 0 4px rgba(0,0,0,.">
-<meta property="og:image" content="http://orzbvlxeq.bkt.clouddn.com/sass.png">
-<meta property="og:image" content="http://orzbvlxeq.bkt.clouddn.com/sassMixin.png">
-<meta property="og:updated_time" content="2017-07-19T05:46:05.000Z">
+<meta property="og:description" content="DOM编程DOM（文档对象模型）是独立于语言的。浏览器通常把DOM与js分开实现。 DOM的访问与修改尽量将运算放在js这一端处理 innerHTML和DOM方法修改页面区域的最佳方案究竟是用非标准但支持良好的innerHTML，还是用原生DOM的方法？在性能上两者相差无几，但是从代码量上分析，推荐使用innerHTML。 节点克隆使用克隆已有元素，更新页面内容element.cloneNode(">
+<meta property="og:updated_time" content="2017-07-20T06:47:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sass">
-<meta name="twitter:description" content="sass1--watch style.scss:style.css 通过命令行及时更改scss对应的css  @mixin box-shadow($shadow…) {  @if length($shadow) &amp;gt;= 1 {    @include prefixer(box-shadow, $shadow);  } @else{    $shadow:0 0 4px rgba(0,0,0,.">
-<meta name="twitter:image" content="http://orzbvlxeq.bkt.clouddn.com/sass.png">
+<meta name="twitter:title" content="DOM编程">
+<meta name="twitter:description" content="DOM编程DOM（文档对象模型）是独立于语言的。浏览器通常把DOM与js分开实现。 DOM的访问与修改尽量将运算放在js这一端处理 innerHTML和DOM方法修改页面区域的最佳方案究竟是用非标准但支持良好的innerHTML，还是用原生DOM的方法？在性能上两者相差无几，但是从代码量上分析，推荐使用innerHTML。 节点克隆使用克隆已有元素，更新页面内容element.cloneNode(">
 
 
 
@@ -152,13 +149,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/23/sass/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/20/DOMScript/"/>
 
 
 
 
 
-  <title>sass | fjs's blog</title>
+  <title>DOM编程 | fjs's blog</title>
   
 
 
@@ -297,7 +294,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/23/sass/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/DOMScript/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Fjs">
@@ -314,7 +311,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sass</h1>
+          <h1 class="post-title" itemprop="name headline">DOM编程</h1>
         
 
         <div class="post-meta">
@@ -326,8 +323,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-23T09:22:25+08:00">
-                2017-06-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T13:21:10+08:00">
+                2017-07-20
               </time>
             
 
@@ -336,39 +333,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/sass/" itemprop="url" rel="index">
-                    <span itemprop="name">sass</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -394,20 +358,64 @@
       
 
       
-        <h3 id="sass"><a href="#sass" class="headerlink" title="sass"></a>sass</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">--watch style.scss:style.css</div></pre></td></tr></table></figure>
-<p>通过命令行及时更改scss对应的css</p>
-<p><img src="http://orzbvlxeq.bkt.clouddn.com/sass.png" alt="sass"></p>
-<p>@mixin box-shadow($shadow…) {<br>  @if length($shadow) &gt;= 1 {<br>    @include prefixer(box-shadow, $shadow);<br>  } @else{<br>    $shadow:0 0 4px rgba(0,0,0,.3);<br>    @include prefixer(box-shadow, $shadow);<br>  }<br>}</p>
-<p>这个 box-shadow 的混合宏，带有多个参数，这个时候可以使用“ … ”来替代。简单的解释一下，当 $shadow 的参数数量值大于或等于“ 1 ”时，表示有多个阴影值，反之调用默认的参数值“ 0 0 4px rgba(0,0,0,.3) ”。</p>
-<p>@mixin border-radius($radius){<br>  -webkit-border-radius: $radius;<br>  border-radius: $radius;<br>}</p>
-<p>.box {<br>  @include border-radius(3px);<br>}<br>传一个不带值得参数<br><img src="http://orzbvlxeq.bkt.clouddn.com/sassMixin.png" alt="sass"></p>
-<p>函数列表<br>•       length($list)：返回一个列表的长度值；<br>•       nth($list, $n)：返回一个列表中指定的某个标签值<br>•       join($list1, $list2, [$separator])：将两个列给连接在一起，变成一个列表；<br>•       append($list1, $val, [$separator])：将某个值放在列表的最后；<br>•       zip($lists…)：将几个列表结合成一个多维的列表；<br>•       index($list, $value)：返回一个值在列表中的位置值。</p>
-<p>Introspection函数<br>• type-of($value)：返回一个值的类型<br>• unit($number)：返回一个值的单位<br>• unitless($number)：判断一个值是否带有单位<br>• comparable($number-1, $number-2)：判断两个值是否可以做加、减和合并</p>
-<p>map函数<br>• map-get($map,$key)：根据给定的 key 值，返回 map 中相关的值。<br>• map-merge($map1,$map2)：将两个 map 合并成一个新的 map。<br>• map-remove($map,$key)：从 map 中删除一个 key，返回一个新 map。<br>• map-keys($map)：返回 map 中所有的 key。<br>• map-values($map)：返回 map 中所有的 value。<br>• map-has-key($map,$key)：根据给定的 key 值判断 map 是否有对应的 value 值，如果有返回 true，否则返回 false。<br>• keywords($args)：返回一个函数的参数，这个参数可以动态的设置 key 和 value。</p>
-<p>颜色函数</p>
-<p>• rgb($red,$green,$blue)：根据红、绿、蓝三个值创建一个颜色；<br>• rgba($red,$green,$blue,$alpha)：根据红、绿、蓝和透明度值创建一个颜色；<br>• red($color)：从一个颜色中获取其中红色值；<br>• green($color)：从一个颜色中获取其中绿色值；<br>• blue($color)：从一个颜色中获取其中蓝色值；<br>• mix($color-1,$color-2,[$weight])：把两种颜色混合在一起。</p>
-<p>• hsl($hue,$saturation,$lightness)：通过色相（hue）、饱和度(saturation)和亮度（lightness）的值创建一个颜色；<br>• hsla($hue,$saturation,$lightness,$alpha)：通过色相（hue）、饱和度(saturation)、亮度（lightness）和透明（alpha）的值创建一个颜色；<br>• hue($color)：从一个颜色中获取色相（hue）值；<br>• saturation($color)：从一个颜色中获取饱和度（saturation）值；<br>• lightness($color)：从一个颜色中获取亮度（lightness）值；<br>• adjust-hue($color,$degrees)：通过改变一个颜色的色相值，创建一个新的颜色；<br>• lighten($color,$amount)：通过改变颜色的亮度值，让颜色变亮，创建一个新的颜色；<br>• darken($color,$amount)：通过改变颜色的亮度值，让颜色变暗，创建一个新的颜色；<br>• saturate($color,$amount)：通过改变颜色的饱和度值，让颜色更饱和，从而创建一个新的颜色<br>• desaturate($color,$amount)：通过改变颜色的饱和度值，让颜色更少的饱和，从而创建出一个新的颜色；<br>• grayscale($color)：将一个颜色变成灰色，相当于desaturate($color,100%);<br>• complement($color)：返回一个补充色，相当于adjust-hue($color,180deg);<br>• invert($color)：反回一个反相色，红、绿、蓝色值倒过来，而透明度不变。<br>•<br>•<br>•<br>•<br>•   alpha($color) /opacity($color)：获取颜色透明度值；<br>•       rgba($color, $alpha)：改变颜色的透明度值；<br>•       opacify($color, $amount) / fade-in($color, $amount)：使颜色更不透明；<br>•       transparentize($color, $amount) / fade-out($color, $amount)：使颜色更加透明。</p>
-
+        <h1 id="DOM编程"><a href="#DOM编程" class="headerlink" title="DOM编程"></a>DOM编程</h1><p>DOM（文档对象模型）是独立于语言的。浏览器通常把DOM与js分开实现。</p>
+<h3 id="DOM的访问与修改"><a href="#DOM的访问与修改" class="headerlink" title="DOM的访问与修改"></a>DOM的访问与修改</h3><p><strong><em>尽量将运算放在js这一端处理</em></strong></p>
+<h4 id="innerHTML和DOM方法"><a href="#innerHTML和DOM方法" class="headerlink" title="innerHTML和DOM方法"></a>innerHTML和DOM方法</h4><p>修改页面区域的最佳方案究竟是用非标准但支持良好的innerHTML，还是用原生DOM的方法？<br>在性能上两者相差无几，但是从代码量上分析，推荐使用innerHTML。</p>
+<h4 id="节点克隆"><a href="#节点克隆" class="headerlink" title="节点克隆"></a>节点克隆</h4><p>使用克隆已有元素，更新页面内容<br><code>element.cloneNode()</code>替代<code>document.createElement()</code><br>在性能上会稍微快一点</p>
+<h4 id="HTML集合"><a href="#HTML集合" class="headerlink" title="HTML集合"></a>HTML集合</h4><p>类似<code>document.getElementByTagName()</code>方法返回的就是一个HTML集合。<code>document.images</code>属性返回的同样是一个HTML集合。</p>
+<p><strong><em>事实上HTML集合一直与文档保持着连接，每次需要最新的信息，都会重复执行查询的过程。这正是低效之源。</em></strong><br>将html集合拷贝到普通数组，再进行操作，会大大提升效率。</p>
+<h4 id="元素节点"><a href="#元素节点" class="headerlink" title="元素节点"></a>元素节点</h4><p>在某些情况下，只需访问元素节点，比如不需要注释和文本节点。大部分浏览器提供的API只返回元素节点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性名</th>
+<th style="text-align:center">被替代的属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">children</td>
+<td style="text-align:center">childNodes</td>
+</tr>
+<tr>
+<td style="text-align:center">childElementCount</td>
+<td style="text-align:center">childNodes.length</td>
+</tr>
+<tr>
+<td style="text-align:center">firstElementChild</td>
+<td style="text-align:center">firstChild</td>
+</tr>
+<tr>
+<td style="text-align:center">lastElementChild</td>
+<td style="text-align:center">lastChild</td>
+</tr>
+<tr>
+<td style="text-align:center">nextElementSibling</td>
+<td style="text-align:center">nextSibling</td>
+</tr>
+<tr>
+<td style="text-align:center">previousElementSibling</td>
+<td style="text-align:center">previousSibling</td>
+</tr>
+</tbody>
+</table>
+<h5 id="选择器API"><a href="#选择器API" class="headerlink" title="选择器API"></a>选择器API</h5><p><code>document.querySelectorAll(&quot;#menu a&quot;)</code>查询id为menu中的所有a标签静态列表</p>
+<h4 id="重绘与重排"><a href="#重绘与重排" class="headerlink" title="重绘与重排"></a>重绘与重排</h4><p>浏览器下载完所有组件，会解析并生成两个内部数据结构<br>dom树:表示页面机构<br>渲染树:表示DOM节点如何显示</p>
+<p>重绘就是讲DOM树重新排列，重绘就是重新渲染。<strong><em>这两个操作都会导致Web应用程序的UI反应迟钝</em></strong></p>
+<h5 id="最小化重排和重绘"><a href="#最小化重排和重绘" class="headerlink" title="最小化重排和重绘"></a>最小化重排和重绘</h5><ul>
+<li>使用cssText属性修改样式</li>
+<li><p>批量修改DOM</p>
+<ul>
+<li><p>使元素脱离文档流</p>
+<p>  1.隐藏元素(display:none)<br>  2.在DOM之外创建一个子树，然后拷贝进文档流<br>  3.将元素拷贝到一个脱离文档的节点中，修改副本，再放回去    </p>
+</li>
+<li>对其应用多重改变</li>
+<li>把元素待会文档中</li>
+</ul>
+</li>
+</ul>
+<p><code>document.creatDocumentFragment()</code><strong><em>在文档之外创建并更新一个文档片段</em></strong><code>appendDataToElement()</code><strong><em>添加data到文档片段中</em></strong>    </p>
+<h4 id="使用事件委托来减少事件处理器"><a href="#使用事件委托来减少事件处理器" class="headerlink" title="使用事件委托来减少事件处理器"></a>使用事件委托来减少事件处理器</h4>
       
     </div>
 
@@ -436,7 +444,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/sass/" rel="tag"># sass</a>
+            <a href="/tags/optimize/" rel="tag"># optimize</a>
           
         </div>
       
@@ -449,8 +457,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/22/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/07/19/DataAccess/" rel="next" title="数据存储">
+                <i class="fa fa-chevron-left"></i> 数据存储
               </a>
             
           </div>
@@ -459,8 +467,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/27/new/" rel="prev" title="大前端开发者需要了解的基础编译原理和语言知识">
-                大前端开发者需要了解的基础编译原理和语言知识 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/03/subject/" rel="prev" title="10分钟题目">
+                10分钟题目 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -590,7 +598,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#sass"><span class="nav-number">1.</span> <span class="nav-text">sass</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM编程"><span class="nav-number">1.</span> <span class="nav-text">DOM编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM的访问与修改"><span class="nav-number">1.0.1.</span> <span class="nav-text">DOM的访问与修改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#innerHTML和DOM方法"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">innerHTML和DOM方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#节点克隆"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">节点克隆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML集合"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">HTML集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元素节点"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">元素节点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#选择器API"><span class="nav-number">1.0.1.4.1.</span> <span class="nav-text">选择器API</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重绘与重排"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">重绘与重排</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#最小化重排和重绘"><span class="nav-number">1.0.1.5.1.</span> <span class="nav-text">最小化重排和重绘</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用事件委托来减少事件处理器"><span class="nav-number">1.0.1.6.</span> <span class="nav-text">使用事件委托来减少事件处理器</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
