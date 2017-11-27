@@ -111,19 +111,19 @@
 
 
 
-<meta name="description" content="测试框架Mocha+webpack搭建教程安装mochanpm install --global mocha 创建webpack项目新建一个文件夹，cd进入文件夹，输入npm init创建webpack的项目在test command填入mocha --compilers js:babel-core/registermocha为运行测试的命令，默认运行test下的\.test.js文件，--com">
+<meta name="description" content="测试框架Mocha+webpack搭建教程">
 <meta name="keywords" content="test">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mocha">
 <meta property="og:url" content="http://yoursite.com/2017/10/19/mocha/index.html">
 <meta property="og:site_name" content="fjs&#39;s blog">
-<meta property="og:description" content="测试框架Mocha+webpack搭建教程安装mochanpm install --global mocha 创建webpack项目新建一个文件夹，cd进入文件夹，输入npm init创建webpack的项目在test command填入mocha --compilers js:babel-core/registermocha为运行测试的命令，默认运行test下的\.test.js文件，--com">
+<meta property="og:description" content="测试框架Mocha+webpack搭建教程">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ovftx8ppu.bkt.clouddn.com/webpackMocha.jpeg">
-<meta property="og:updated_time" content="2017-10-19T08:58:59.388Z">
+<meta property="og:updated_time" content="2017-11-27T05:17:04.071Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mocha">
-<meta name="twitter:description" content="测试框架Mocha+webpack搭建教程安装mochanpm install --global mocha 创建webpack项目新建一个文件夹，cd进入文件夹，输入npm init创建webpack的项目在test command填入mocha --compilers js:babel-core/registermocha为运行测试的命令，默认运行test下的\.test.js文件，--com">
+<meta name="twitter:description" content="测试框架Mocha+webpack搭建教程">
 <meta name="twitter:image" content="http://ovftx8ppu.bkt.clouddn.com/webpackMocha.jpeg">
 
 
@@ -394,18 +394,19 @@
       
 
       
-        <h2 id="测试框架Mocha-webpack搭建教程"><a href="#测试框架Mocha-webpack搭建教程" class="headerlink" title="测试框架Mocha+webpack搭建教程"></a>测试框架Mocha+webpack搭建教程</h2><h3 id="安装mocha"><a href="#安装mocha" class="headerlink" title="安装mocha"></a>安装mocha</h3><p><code>npm install --global mocha</code></p>
+        <h2 id="测试框架Mocha-webpack搭建教程"><a href="#测试框架Mocha-webpack搭建教程" class="headerlink" title="测试框架Mocha+webpack搭建教程"></a>测试框架Mocha+webpack搭建教程</h2><a id="more"></a>
+<h3 id="安装mocha"><a href="#安装mocha" class="headerlink" title="安装mocha"></a>安装mocha</h3><p><code>npm install --global mocha</code></p>
 <h3 id="创建webpack项目"><a href="#创建webpack项目" class="headerlink" title="创建webpack项目"></a>创建webpack项目</h3><p>新建一个文件夹，cd进入文件夹，输入<br><code>npm init</code><br>创建webpack的项目<br><img src="http://ovftx8ppu.bkt.clouddn.com/webpackMocha.jpeg" alt=""><br>在test command填入<br><code>mocha --compilers js:babel-core/register</code><br><em><code>mocha</code>为运行测试的命令，默认运行test下的\</em>.<strong>test.js文件，<code>--compilers</code>参数后面紧跟一个用冒号分隔的字符串，冒号左边是文件的后缀名，右边是用来处理这一类文件的模块名。上面代码表示，运行测试之前，先用<code>babel-core/register</code>模块，处理一下.js文件。由于这里的转码器安装在项目内，所以要使用项目内安装的Mocha；如果转码器安装在全局，就可以使用全局的Mocha*</strong><br>然后就一直回车，创建完成</p>
 <p>运行<br><code>npm i --D chai babel-core babel-preset-es2015</code><br>安装chai和es2015模块</p>
 <p>创建一个.babelrc文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;presets&quot;: [ &quot;es2015&quot; ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;presets&quot;: [ &quot;es2015&quot; ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>  文件中配置将es6转成es2015，方便之后的书写</p>
 <p>  文件下手动创建src和test文件，src用来存放要测试的js</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export function compare(a, b) &#123;</div><div class="line">    return b * a;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export function compare(a, b) &#123;</span><br><span class="line">    return b * a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>test文件下创建一个*.test.js的测试脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&apos;use strict&apos;;</div><div class="line"></div><div class="line">var _compare = require(&apos;../src/compare.js&apos;);</div><div class="line"></div><div class="line">var expect = require(&apos;chai&apos;).expect;</div><div class="line"></div><div class="line">describe(&apos;乘法函数的测试&apos;, function () &#123;</div><div class="line">  it(&apos;1 乘 1 应该等于 1&apos;, function () &#123;</div><div class="line">    expect( _compare.compare(1, 1)).to.be.equal(1);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">var _compare = require(&apos;../src/compare.js&apos;);</span><br><span class="line"></span><br><span class="line">var expect = require(&apos;chai&apos;).expect;</span><br><span class="line"></span><br><span class="line">describe(&apos;乘法函数的测试&apos;, function () &#123;</span><br><span class="line">  it(&apos;1 乘 1 应该等于 1&apos;, function () &#123;</span><br><span class="line">    expect( _compare.compare(1, 1)).to.be.equal(1);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>之后就可以通过<br><code>npm run test</code><br>来运行测试脚本</p>
-<p>到此一套测试的用例就搭建完成，在阮一峰博客有mocha更详细教程，此处只是将webpack和mocha合并起来，方便mocha的使用。<br>此处附上阮一峰博客的<a href="http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html" target="_blank" rel="external">飞机票</a></p>
+<p>到此一套测试的用例就搭建完成，在阮一峰博客有mocha更详细教程，此处只是将webpack和mocha合并起来，方便mocha的使用。<br>此处附上阮一峰博客的<a href="http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html" target="_blank" rel="noopener">飞机票</a></p>
 
       
     </div>
