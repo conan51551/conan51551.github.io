@@ -370,16 +370,16 @@
 
       
         
-          
-            <h3 id="在使用Taro开发小程序过程中，遇到一个关于Input组件的问题"><a href="#在使用Taro开发小程序过程中，遇到一个关于Input组件的问题" class="headerlink" title="在使用Taro开发小程序过程中，遇到一个关于Input组件的问题"></a>在使用Taro开发小程序过程中，遇到一个关于Input组件的问题</h3><blockquote>
+          <h3 id="在使用Taro开发小程序过程中，遇到一个关于Input组件的问题"><a href="#在使用Taro开发小程序过程中，遇到一个关于Input组件的问题" class="headerlink" title="在使用Taro开发小程序过程中，遇到一个关于Input组件的问题"></a>在使用Taro开发小程序过程中，遇到一个关于Input组件的问题</h3><blockquote>
 <p>问题描述：在onBlur中修改input的值，不生效，修改input的Value，会有value和展示的值不一致的问题</p>
 </blockquote>
-<h3 id="在微信的官方文档中写到"><a href="#在微信的官方文档中写到" class="headerlink" title="在微信的官方文档中写到"></a>在微信的官方文档中写到</h3><blockquote>
-<p>bindinput说明：<br>键盘输入时触发，event.detail = {value, cursor, keyCode}，keyCode 为键值，2.1.0 起支持，处理函数可以直接 return 一个字符串，将替换输入框的内容。</p>
-</blockquote>
-<h3 id="而在其他的触发方法中，并不能直接修改输入框中的内容"><a href="#而在其他的触发方法中，并不能直接修改输入框中的内容" class="headerlink" title="而在其他的触发方法中，并不能直接修改输入框中的内容"></a>而在其他的触发方法中，并不能直接修改输入框中的内容</h3><h3 id="最终的解决方法是"><a href="#最终的解决方法是" class="headerlink" title="最终的解决方法是"></a>最终的解决方法是</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;showInput ?</span><br><span class="line">    &lt;Input</span><br><span class="line">    className=<span class="string">'input'</span></span><br><span class="line">    value=&#123;number + <span class="string">''</span>&#125;</span><br><span class="line">    onBlur=&#123;<span class="keyword">this</span>.onChangeNum&#125;</span><br><span class="line">    onInput=&#123;<span class="keyword">this</span>.checkNum&#125;</span><br><span class="line">    type=<span class="string">'number'</span></span><br><span class="line">    focus=&#123;showInput&#125;</span><br><span class="line">  /&gt; : </span><br><span class="line">  &lt;Text className=<span class="string">'input'</span> onClick=&#123;<span class="keyword">this</span>.focusInput&#125;&gt;&#123;number&#125;&lt;<span class="regexp">/Text&gt;&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="用一个text代替input展示，问题就解决了"><a href="#用一个text代替input展示，问题就解决了" class="headerlink" title="用一个text代替input展示，问题就解决了"></a>用一个text代替input展示，问题就解决了</h3>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/12/2020blog/TaroInput/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
