@@ -292,6 +292,135 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/12/2020blog/TaroInput/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fjs">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/img/wxIcon.bmp">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fjs's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/12/2020blog/TaroInput/" itemprop="url">TaroInput</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-12T11:11:40+08:00">
+                2020-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/03/12/2020blog/TaroInput/" class="leancloud_visitors" data-flag-title="TaroInput">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="在使用Taro开发小程序过程中，遇到一个关于Input组件的问题"><a href="#在使用Taro开发小程序过程中，遇到一个关于Input组件的问题" class="headerlink" title="在使用Taro开发小程序过程中，遇到一个关于Input组件的问题"></a>在使用Taro开发小程序过程中，遇到一个关于Input组件的问题</h3><blockquote>
+<p>问题描述：在onBlur中修改input的值，不生效，修改input的Value，会有value和展示的值不一致的问题</p>
+</blockquote>
+<h3 id="在微信的官方文档中写到"><a href="#在微信的官方文档中写到" class="headerlink" title="在微信的官方文档中写到"></a>在微信的官方文档中写到</h3><blockquote>
+<p>bindinput说明：<br>键盘输入时触发，event.detail = {value, cursor, keyCode}，keyCode 为键值，2.1.0 起支持，处理函数可以直接 return 一个字符串，将替换输入框的内容。</p>
+</blockquote>
+<h3 id="而在其他的触发方法中，并不能直接修改输入框中的内容"><a href="#而在其他的触发方法中，并不能直接修改输入框中的内容" class="headerlink" title="而在其他的触发方法中，并不能直接修改输入框中的内容"></a>而在其他的触发方法中，并不能直接修改输入框中的内容</h3><h3 id="最终的解决方法是"><a href="#最终的解决方法是" class="headerlink" title="最终的解决方法是"></a>最终的解决方法是</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;showInput ?</span><br><span class="line">    &lt;Input</span><br><span class="line">    className=<span class="string">'input'</span></span><br><span class="line">    value=&#123;number + <span class="string">''</span>&#125;</span><br><span class="line">    onBlur=&#123;<span class="keyword">this</span>.onChangeNum&#125;</span><br><span class="line">    onInput=&#123;<span class="keyword">this</span>.checkNum&#125;</span><br><span class="line">    type=<span class="string">'number'</span></span><br><span class="line">    focus=&#123;showInput&#125;</span><br><span class="line">  /&gt; : </span><br><span class="line">  &lt;Text className=<span class="string">'input'</span> onClick=&#123;<span class="keyword">this</span>.focusInput&#125;&gt;&#123;number&#125;&lt;<span class="regexp">/Text&gt;&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="用一个text代替input展示，问题就解决了"><a href="#用一个text代替input展示，问题就解决了" class="headerlink" title="用一个text代替input展示，问题就解决了"></a>用一个text代替input展示，问题就解决了</h3>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/10/2019blog/TS-Study/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1588,166 +1717,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/05/jumpURL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fjs">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/img/wxIcon.bmp">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="fjs's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/05/jumpURL/" itemprop="url">标签中嵌入链接跳转</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T18:31:24+08:00">
-                2018-01-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/blog/" itemprop="url" rel="index">
-                    <span itemprop="name">blog</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/05/jumpURL/" class="leancloud_visitors" data-flag-title="标签中嵌入链接跳转">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="html标签中嵌入url"><a href="#html标签中嵌入url" class="headerlink" title="html标签中嵌入url"></a>html标签中嵌入url</h3><p>在html标签中嵌入url不能直接点击链接跳转，此时需要将url链接匹配出来，然后添加a标签，完成跳转<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/05/jumpURL/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1795,7 +1764,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
