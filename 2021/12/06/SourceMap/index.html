@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <title>
+    SourceMap |
+    
+    fanjunsheng&#39;s Blog
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-SourceMap" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    SourceMap
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2021/12/06/SourceMap/" class="article-date">
+  <time datetime="2021-12-06T06:06:42.000Z" itemprop="datePublished">2021-12-06</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p><strong><code>source map</code>是为了解决即使打包过后的代码，也可以找到具体的报错位置，使我们的<code>debug</code>代码变得更轻松</strong></p>
+<span id="more"></span>
+
+<h1 id="Webpack中的配置"><a href="#Webpack中的配置" class="headerlink" title="Webpack中的配置"></a>Webpack中的配置</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;   </span><br><span class="line">    <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,  </span><br><span class="line">    <span class="attr">output</span>: &#123;      </span><br><span class="line">        <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,      </span><br><span class="line">        <span class="attr">path</span>: path.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>)  </span><br><span class="line">    &#125;,  </span><br><span class="line">    <span class="attr">devtool</span>: <span class="string">&quot;source-map&quot;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中devtool有20多种不同取值，分别生成不同类型<code>Source Map</code>,主要有以下几种</p>
+<ul>
+<li><code>source-map</code>：外部。可以查看错误代码准确信息和源代码的错误位置。</li>
+<li><code>inline-source-map</code>：内联。只生成一个内联 <code>Source Map</code>，可以查看错误代码准确信息和源代码的错误位置</li>
+<li><code>hidden-source-map</code>：外部。可以查看错误代码准确信息，但不能追踪源代码错误，只能提示到构建后代码的错误位置。</li>
+<li><code>eval-source-map</code>：内联。每一个文件都生成对应的 <code>Source Map</code>，都在 <code>eval</code> 中，可以查看错误代码准确信息 和 源代码的错误位置。</li>
+<li><code>nosources-source-map</code>：外部。可以查看错误代码错误原因，但不能查看错误代码准确信息，并且没有任何源代码信息。</li>
+<li><code>cheap-source-map</code>：外部。可以查看错误代码准确信息和源代码的错误位置，只能把错误精确到整行，忽略列。</li>
+<li><code>cheap-module-source-map</code>：外部。可以错误代码准确信息和源代码的错误位置，<code>module</code> 会加入 <code>loader</code> 的 <code>Source Map</code>。</li>
+</ul>
+<p>内联和外部的区别：</p>
+<ol>
+<li>外部生成了文件（.map），内联没有。</li>
+<li>内联构建速度更快。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>测试环境用<code>source-map</code> &#x3D;&gt; <code>cheap-module-souce-map</code><br>正式环境用<code>nosources-source-map</code>&#x3D;&gt;<code>hidden-source-map</code></p>
+<h1 id="map文件解构"><a href="#map文件解构" class="headerlink" title=".map文件解构"></a>.map文件解构</h1><p>下面是一个<code>bundle.js</code>文件生成的<code>.map</code>文件</p>
+<p>原始文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
+
+<p>打包后的文件 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/******/</span></span><br><span class="line">(<span class="function">() =&gt;</span> &#123; <span class="comment">// webpackBootstrap   </span></span><br><span class="line">    <span class="keyword">var</span> __webpack_exports__ = &#123;&#125;;  </span><br><span class="line">    <span class="comment">/*!**********************!*\    </span></span><br><span class="line"><span class="comment">      !*** ./src/index.js ***!     </span></span><br><span class="line"><span class="comment">      \**********************/</span>   </span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span>;   </span><br><span class="line">    <span class="built_in">console</span>.log(a);   </span><br><span class="line">    <span class="comment">/******/</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">//# sourceMappingURL=bundle.js.map</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">    <span class="string">&quot;version&quot;</span>: <span class="number">3</span>,  <span class="comment">// sourceMap版本</span></span><br><span class="line">    <span class="string">&quot;sources&quot;</span>: [  <span class="comment">// 转换前的文件   </span></span><br><span class="line">        <span class="string">&quot;webpack://learn-source-map/./src/index.js&quot;</span>   </span><br><span class="line">    ],  </span><br><span class="line">    <span class="string">&quot;names&quot;</span>: [],  <span class="comment">// 转换钱所有变量名  </span></span><br><span class="line">    <span class="string">&quot;mappings&quot;</span>: <span class="string">&quot;AAAA;AACA,c&quot;</span>,   <span class="comment">// 记录位置信息的字符串</span></span><br><span class="line">    <span class="string">&quot;file&quot;</span>: <span class="string">&quot;bundle.js&quot;</span>,  <span class="comment">// 转换后的文件名</span></span><br><span class="line">    <span class="string">&quot;sourcesContent&quot;</span>: [ <span class="comment">// 转换前文件原始内容    </span></span><br><span class="line">        <span class="string">&quot;var a = 1;\r\nconsole.log(a);&quot;</span>  </span><br><span class="line">    ],   </span><br><span class="line">    <span class="string">&quot;sourceRoot&quot;</span>: <span class="string">&quot;&quot;</span> <span class="comment">// 转换钱文件的所在目录</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>mappings</code>要单独拿出来理解一下</p>
+<ul>
+<li><code>；</code>表示不同行，每个分号都表示转换后源码的一行 （以此为例就是分了两行）</li>
+<li><code>，</code>表示对应转换后源码的一个位置(以此为例就是AAACA,c表示<code>console</code>和<code>log(a)</code>)</li>
+<li>每个字母表示不同的位置转换(每个字母表示不同意思，最多由5个字母组成）<ol>
+<li>第一位，表示这个位置在（转换后的代码的）的第几列。</li>
+<li>第二位，表示这个位置属于 sources 属性中的哪一个文件。</li>
+<li>第三位，表示这个位置属于转换前代码的第几行。</li>
+<li>第四位，表示这个位置属于转换前代码的第几列。</li>
+<li>第五位，表示这个位置属于 names 属性中的哪一个变量。</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/12/06/SourceMap/" data-id="clr4l783c000gx24jaujk8ysd" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2021/12/07/%E7%BD%97%E6%9B%BC%E7%BD%97%E5%85%B0/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      记录
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2019/05/29/Japen2019/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">日本旅行计划</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank">cross</a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="fanjunsheng&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

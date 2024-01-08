@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <title>
+    事件循环 |
+    
+    fanjunsheng&#39;s Blog
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-EventLoop" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    事件循环
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/21/EventLoop/" class="article-date">
+  <time datetime="2019-02-21T09:21:03.000Z" itemprop="datePublished">2019-02-21</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="javescript的事件循环"><a href="#javescript的事件循环" class="headerlink" title="javescript的事件循环"></a>javescript的事件循环</h2><p>要说javescript的事件循环，就要从js的单线程说起</p>
+<span id="more"></span>
+
+<hr>
+<h3 id="为什么js是单线程？"><a href="#为什么js是单线程？" class="headerlink" title="为什么js是单线程？"></a>为什么js是单线程？</h3><p>js的单线程与他用途有关。js的主要用途是与用户交互，以及操作DOM，这决定了它只能是单线程。</p>
+<hr>
+<h3 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h3><p>单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。但是很多时候CPU是闲着的，因为IO设备（输入输出设备）很慢（比如Ajax操作从网络读取数据），不得不等着结果出来，再往下执行。</p>
+<p>所以主线程完全可以不管IO设备可以挂起处于等待中的任务，先运行排在后面的任务。等到IO设备返回了结果，再回过头，把挂起的任务继续执行下去。</p>
+<p>于是，所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。</p>
+<p>异步执行机制（同步执行也是如此）：</p>
+<ul>
+<li>所有同步任务都在主线程上执行，形成一个执行栈。</li>
+<li>主线程之外，还存在一个”任务队列”（task queue）。只要异步任务有了运行结果，就在”任务队列”之中放置一个事件。</li>
+<li>一旦”执行栈”中的所有同步任务执行完毕，系统就会读取”任务队列”，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。</li>
+<li>主线程不断重复上面的第三步。</li>
+</ul>
+<p>关于任务队列再补充几点</p>
+<ul>
+<li><strong>任务队列</strong>中的事件只要指定过<strong>回调函数</strong>，这些事件发生时就会进入<strong>任务队列</strong>，队列又细分为宏队列和微队列，其中包含的任务被称为宏任务和微任务。<strong>回调函数</strong>就是会被主线程挂起来的代码。</li>
+<li><strong>任务队列</strong>是一个先进先出的数据结构</li>
+<li>主线程读取任务队列基本上是自动的，只要执行栈清空，<strong>任务队列</strong>上第一个事件就自动进入主线程</li>
+</ul>
+<hr>
+<h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p><em>主线程从”任务队列”中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）。</em></p>
+<p>这边有一个很重要的点就是:<br><strong>执行栈中的代码总是在读取任务队列之前执行</strong></p>
+<p><img src="/../img/bg2014100802.png" alt="bg2014100802"></p>
+<p>主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码调用各种外部API，它们在”任务队列”中加入各种事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取”任务队列”，依次执行那些事件所对应的回调函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> req = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">req.open(<span class="string">&#x27;GET&#x27;</span>, url);</span><br><span class="line">req.send();</span><br><span class="line">req.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;    </span><br><span class="line">req.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;   </span><br></pre></td></tr></table></figure>
+
+<p><code>req.onload</code>和<code>req.onerror</code>在<code>send()</code>的前后无关紧要，因为他们是执行栈的一部分，只有执行完他们，才会去读取<code>send()</code>加入任务队列中的回调函数</p>
+<h4 id="Node-js的事件循环"><a href="#Node-js的事件循环" class="headerlink" title="Node.js的事件循环"></a>Node.js的事件循环</h4><p><img src="/../img/bg2014100803.png" alt="bg2014100803"></p>
+<p>Node.js的运行机制如下</p>
+<ol>
+<li>V8引擎解析js</li>
+<li>解析代码后，调用Node的API</li>
+<li>libuv库负责Node API的执行。它将不同任务分配给不同队列形成事件循环，以异步方式将任务执行结果返回给V8引擎</li>
+<li>V8引擎再将结果返回给用户</li>
+</ol>
+<p>Node.js的事件循环与浏览器不一样，它每一轮事件循环分6个部分，依次执行。每个阶段都有一个先进先出的回调函数队列。只有一个阶段的回调函数队列清空了，该执行的回调函数都执行了，事件循环才会进入下一个阶段。<br><img src="/../img/bg2018022304.png" alt="bg2018022304"></p>
+<ul>
+<li>timmer:这个是定时器阶段，处理setTimeout()和setInterval()的回调函数。进入这个阶段后，主线程会检查一下当前时间，是否满足定时器的条件。如果满足就执行回调函数，否则就离开这个阶段。</li>
+<li>I&#x2F;O callbacks: 这个阶段执行一些系统操作的回调。比如TCP错误，如一个TCP socket在想要连接时收到ECONNREFUSED, 类unix系统会等待以报告错误，这就会放到 I&#x2F;O callbacks 阶段的队列执行。</li>
+<li>idle,prepare:该阶段只供 libuv 内部调用，这里可以忽略。</li>
+<li>Poll:这个阶段是轮询时间，用于等待还未返回的 I&#x2F;O 事件，比如服务器的回应、用户移动鼠标等等。这个阶段的时间会比较长。如果没有其他异步任务要处理（比如到期的定时器），会一直停留在这个阶段，等待 I&#x2F;O 请求返回结果。</li>
+<li>check: <code>setImmediate</code>在这个阶段执行</li>
+<li>close callbacks：该阶段关闭请求的回调函数</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someAsyncOperation</span> (<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 假设这个任务要消耗 95ms</span></span><br><span class="line">  fs.readFile(<span class="string">&#x27;/path/to/file&#x27;</span>, callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> timeoutScheduled = <span class="built_in">Date</span>.now();</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> delay = <span class="built_in">Date</span>.now() - timeoutScheduled;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(delay + <span class="string">&quot;ms have passed since I was scheduled&quot;</span>);</span><br><span class="line">&#125;, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// someAsyncOperation要消耗 95 ms 才能完成</span></span><br><span class="line">someAsyncOperation(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> startCallback = <span class="built_in">Date</span>.now();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 消耗 10ms...</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="built_in">Date</span>.now() - startCallback &lt; <span class="number">10</span>) &#123;</span><br><span class="line">    ; <span class="comment">// do nothing</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在timmer阶段<code>setTimeout</code>还没有到设置的时间，不会执行回调</li>
+<li>进入Poll阶段，读取文件用时95ms，然后执行回调，在回调执行到一半，100ms的定时器到期，但是必须等这个回调执行完毕才会离开这个阶段</li>
+<li>执行<code>setTimeout</code>回调，打印出105ms</li>
+</ol>
+<h3 id="宏任务和微任务"><a href="#宏任务和微任务" class="headerlink" title="宏任务和微任务"></a>宏任务和微任务</h3><p>先通过一张图片来了解宏任务与微任务的关系</p>
+<p><img src="/../img/165a8667bb6e623e" alt="165a8667bb6e623e"></p>
+<ol>
+<li>执行全局同步代码</li>
+<li>全局代码执行完毕后，调用栈会清空</li>
+<li>从微任务中取出队首的回调任务，放入调用栈执行</li>
+<li>继续取出微任务队首任务放入执行栈执行，以此类推，直到微任务队列全部执行完毕。如果再执行微任务过程中，又产生微任务，会加到这个周期的微任务末尾，也在这个周期执行</li>
+<li>微任务全部执行完毕，此时微任务队列为空，调用栈也为空，去除宏队列中队首的任务，放入执行栈执行</li>
+<li>执行完毕后，调用栈为空</li>
+<li>重复3-7步骤</li>
+</ol>
+<h4 id="宏任务"><a href="#宏任务" class="headerlink" title="宏任务"></a>宏任务</h4><p>宏任务最常见的例子就是定时器：<code>setTimeout()</code>和<code>setInterval()</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">执行结果：<span class="comment">// 1 3 2</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的例子中，<code>setTimeout</code>注册了一个宏任务，等执行栈全部执行完后，再从宏任务中取出并执行。</p>
+<h4 id="微任务"><a href="#微任务" class="headerlink" title="微任务"></a>微任务</h4><p><strong>微任务总是在宏任务之后执行，微任务没有执行完成，不会执行下一个宏任务</strong><br>微任务的代表就是<code>Promise</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">  resolve()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line"> 执行结果 <span class="comment">// 1 2 3 4</span></span><br></pre></td></tr></table></figure>
+<p><code>Promise</code>在实例化过程中是同步进行的，二<code>then</code>中注册的回调函数加入微任务中，在执行栈执行完当前同步代码再去查看是否有微任务，执行完微任务才执行宏任务，以此循环</p>
+<p>因此可以预见在<code>Promise</code>中实例化<code>Promise</code>，其输出依然会早于<code>setTimeout</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">  resolve()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">  <span class="built_in">Promise</span>.resolve(</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">  ).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;before timeout&#x27;</span>)</span><br><span class="line">  &#125;).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">Promise</span>.resolve(</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">5</span>)</span><br><span class="line">    ).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;also before timeout&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>以上输出顺序就是按照数字顺序</p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>下面举几个特殊例子<br><code>requestAnimationFrame</code>在MDN上的定义是:<em>告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画</em><br>看下面例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">var</span> timer = requestAnimationFrame(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    resolve();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">&#125;)</span><br><span class="line">输出顺序 <span class="comment">//3 4 2 1</span></span><br></pre></td></tr></table></figure>
+<p>由上代码输出结果可以看出<strong>requestAnimationFrame</strong>实际在微任务后执行，但是又在宏任务之前，从MDN定义来看，重绘是作为宏任务的一个步骤存在的，暂且列为宏任务</p>
+<p><code>requestAnimationFrame</code>可以解决定时器写的动画对网页性能的影响，因为它是在每一次重新渲染页面的时候执行，所以不会像定时器可能会在同一次渲染中多次执行修改页面的代码，也不会因为间隔时间过长引起动画不流畅</p>
+<ul>
+<li><p><strong>requestIdleCallback</strong>在MDN上的定义:<em>会在浏览器空闲时依次调用函数</em><br>看如下例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">var</span> timer = requestIdleCallback(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">      resolve();</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    输出顺序 <span class="comment">//3 4 1 2</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>其实<code>requestIdleCallback</code>无论放在哪都是最后输出<br>这里我们看一下关于<code>requestIdleCallback</code>的深度解释：<strong>只有当一帧的末尾有空闲时间，才会执行回调函数</strong>，我们都知道网页一秒运行60帧，也就说一帧运行时间小于16.7ms才会运行<code>requestIdleCallback</code>的回调函数,我们对上面代码做如下改动</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> timer = requestIdleCallback(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;,&#123;<span class="attr">timeout</span>:<span class="number">100</span>&#125;)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">  resolve();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">&#125;)</span><br><span class="line">输出顺序 <span class="comment">// 3 4 2 1</span></span><br></pre></td></tr></table></figure>
+<p>配置timeout是如果在规定的时间内没有可以运行的帧，到了规定时间就强制执行<code>requestIdleCallback</code>中的回调，不过在实际运行中就已经造成页面的卡顿了</p>
+<p>如上代码是在我浏览器上运行，这个代码执行顺序直接跟浏览器性能有关，如果Promise的运行时间小于我设施的setTimeout的时间，<code>requestIdleCallback</code>就会先于setTimeout执行。废话说了这么多，其实就是为了证明requestIdleCallback是在微任务之后执行的宏任务</p>
+<p><code>requestIdleCallback</code>适合在页面滚动时使用，这样执行的代码不会引起页面滚动的卡顿</p>
+<ul>
+<li><strong>MutationObserver</strong>在MDN的定义为:<em>提供了监视对DOM树所做更改的能力</em></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $inner = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;#inner&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> $outer = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;#outer&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handler</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;click&#x27;</span>) <span class="comment">// 直接输出</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">&#x27;promise&#x27;</span>)) <span class="comment">// 注册微任务</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">&#x27;timeout&#x27;</span>)) <span class="comment">// 注册宏任务</span></span><br><span class="line"></span><br><span class="line">  requestAnimationFrame(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">&#x27;animationFrame&#x27;</span>)) <span class="comment">// 注册宏任务</span></span><br><span class="line"></span><br><span class="line">  $outer.setAttribute(<span class="string">&#x27;data-random&#x27;</span>, <span class="built_in">Math</span>.random()) <span class="comment">// DOM属性修改，触发微任务</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> MutationObserver(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;observer&#x27;</span>)</span><br><span class="line">&#125;).observe($outer, &#123;</span><br><span class="line">  <span class="attr">attributes</span>: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$inner.addEventListener(<span class="string">&#x27;click&#x27;</span>, handler)</span><br><span class="line">$outer.addEventListener(<span class="string">&#x27;click&#x27;</span>, handler)</span><br><span class="line">输出结果 <span class="comment">//</span></span><br><span class="line"> click</span><br><span class="line"> promise</span><br><span class="line"> observer</span><br><span class="line"> click</span><br><span class="line"> promise</span><br><span class="line"> observer</span><br><span class="line"> <span class="number">2</span>* animationFrame</span><br><span class="line"> <span class="number">2</span>* timeout</span><br></pre></td></tr></table></figure>
+
+<p>以上是一段包含<code>MutationObserver</code>的代码，从运行结果可以看出执行顺序如下:</p>
+<ol>
+<li>点击的I&#x2F;O事件会将inner和outer的回调注册为宏任务，先触发inner的handler，打印click</li>
+<li>发现其中有promise优先注册为微任务，setTimeout和requestAnimationFrame注册为宏任务，setAttribute修改了attributes触发MutationObserver注册为微任务</li>
+<li>执行微任务promise和observer后发现没有微任务了</li>
+<li>执行outer注册的宏任务，重复第二部流程</li>
+<li>因为第二步修改了DOM的attributes，导致页面重绘，所以requestAnimationFrame的回调先执行，然后执行setTimeouter</li>
+<li>执行outer中的宏任务，重复第五步流程</li>
+</ol>
+<ul>
+<li><strong>setImmediate</strong>在MDN中解释为：<em>该方法用来把一些需要长时间运行的操作放在一个回调函数里,在浏览器完成后面的其他语句后,就立刻执行这个回调函数</em></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+<p>上面代码输出顺序是不确定的，因为在实际执行的时候，进入事件循环以后，有可能到了1毫秒，也可能还没到1毫秒，取决于系统当时的状况。如果没到1毫秒，那么 timers 阶段就会跳过，进入 check 阶段，先执行setImmediate的回调函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">&#x27;test.js&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">  setImmediate(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>但是这样改进后，2一定在1之前打印，因为先进入I&#x2F;O callback阶段，然后是check阶段，在第二轮循环才轮到timmer阶段</p>
+<ul>
+<li><strong>process.nextTick</strong>是定义一个动作，在下一轮事件轮询时执行，微任务追加在其后面。<br><code>process.nextTick</code>执行比较特殊，无论事件循环在何种阶段，都会在结束时执行</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  process.nextTick(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">6</span>));</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;);</span><br><span class="line">process.nextTick(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</span><br><span class="line">(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">5</span>))();</span><br><span class="line"><span class="comment">// 打印 5 3 4 1 2 6</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<ul>
+<li><p><strong>总结</strong></p>
+<p>  <strong>宏任务:I&#x2F;O，定时器，setImmediate，requestAnimationFrame</strong><br>  <strong>微任务：MutationObserver，Promise.then，process.nextTick</strong></p>
+</li>
+</ul>
+<h4 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h4><p><strong>异步函数</strong>是一个使用隐式 Promise 异步操作以返回其结果的函数。异步函数旨在使异步代码看起来像同步代码，为开发者隐藏异步处理的一些复杂性。</p>
+<p>通常传递<code>Promise</code>给<code>await</code>，但是实际上可以传任意值给<code>await</code>，因为<code>await</code>会将任意值转成<code>Promise</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> v = <span class="keyword">await</span> <span class="number">42</span>;</span><br><span class="line">  <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = foo();</span><br><span class="line"><span class="comment">// → Promise</span></span><br><span class="line"></span><br><span class="line">p.then(<span class="built_in">console</span>.log);</span><br><span class="line"><span class="comment">// prints `42` eventually</span></span><br></pre></td></tr></table></figure>
+
+<p><code>await</code>可以使用任何<code>thenable</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sleep</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">timeout</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.timeout = timeout;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">then</span>(<span class="params">resolve, reject</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> startTime = <span class="built_in">Date</span>.now();</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> resolve(<span class="built_in">Date</span>.now() - startTime),</span><br><span class="line">               <span class="built_in">this</span>.timeout);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> actualTime = <span class="keyword">await</span> <span class="keyword">new</span> Sleep(<span class="number">1000</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(actualTime);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>现在有趣的来了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="built_in">Promise</span>.resolve();</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> p; <span class="built_in">console</span>.log(<span class="string">&#x27;after:await&#x27;</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">p.then(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="string">&#x27;tick:a&#x27;</span>))</span><br><span class="line"> .then(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="string">&#x27;tick:b&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的输出顺序其实是错误的，<code>then</code>关联到一个已经<code>fulfilled</code>的<code>Promise</code>上，V8引擎的一个BUG导致上面的代码<code>await</code>跳过了微任务，先打印出了<code>after:await</code>。</p>
+<p>官方给的解释是<em>这个 bug 的原因是我们违反了 es 的规范，但它后来给了我们关于优化的灵感。</em></p>
+<p><img src="/../img/v8.svg" alt="v8"></p>
+<p>可以看到其实在await的实现中，不论传参是什么，都会再包一层promise，因此事件被加入了下一次的task中，所以导致了输出顺序问题。<br>分析一下<code>await</code>具体做了什么操作：</p>
+<ol>
+<li>将 v 转换为 Promise- v 代表传递给 await 的值。</li>
+<li>给 Promise 附加处理程序以便稍后恢复异步函数。</li>
+<li>挂起异步函数并返回 implicit_promise 给调用者。<br>从性能角度分析，第一步多创建了<code>Promise</code>包装器，然后立即解析<code>Promise</code>包装器v的值，这两行多创建了一个<code>Promise</code>，同时创建<code>Promise</code>会导致一个额外的<code>PromiseReactionJob</code>，<code>resolvePromise</code>会导致一个额外的<code>PromiseResolveThenableJob</code></li>
+</ol>
+<p><img src="/../img/await-code-comparison.svg" alt="await-code-comparison"></p>
+<p>而改进过后，会在包装Promise的时候先判断传入的是不是一个Promise对象，如果是直接沿用这个Promise，从而减少了创建的promise数量和微任务的数量。<code>throwaway</code>是为了恢复foo的执行，因此优化之后的<code>await</code>就只创建这一个新的<code>Promise</code></p>
+<p>内容参考:</p>
+<ul>
+<li>MDN WEB 文档</li>
+<li>&lt;&lt;ES6标准指南&gt;&gt;(阮一峰)</li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html">阮一峰博客：网页性能详解</a></li>
+<li>segmentfault中的全沾开发(huā) <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016022069#articleHeader11">https://segmentfault.com/a/1190000016022069#articleHeader11</a></li>
+<li><a target="_blank" rel="noopener" href="https://v8.js.cn/blog/fast-async/">v8引擎中文官网(更快的异步函数和 Promise)</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/02/21/EventLoop/" data-id="clr4l783b0007x24j4al52gi5" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2019/05/29/Japen2019/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      日本旅行计划
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2018/02/02/TailorPic/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">图片裁剪</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank">cross</a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="fanjunsheng&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

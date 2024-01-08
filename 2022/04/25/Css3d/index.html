@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <title>
+    css实现的3D效果 |
+    
+    fanjunsheng&#39;s Blog
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-Css3d" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    css实现的3D效果
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/04/25/Css3d/" class="article-date">
+  <time datetime="2022-04-25T07:54:35.000Z" itemprop="datePublished">2022-04-25</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>一个使用<code>transform-style: preserve-3d;</code>的动画效果，来自叶总的分享，挺有意思，这里记录一下</p>
+<span id="more"></span>
+
+<p>html代码如下，全部没有用到js，只用css就能实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;img-box&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./imgs/0.jpeg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./imgs/1.jpeg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;detail&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span>&gt;</span>索隆<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: aquamarine;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">10px</span> <span class="number">20px</span> <span class="number">40px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.25</span>);</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">perspective</span>(<span class="number">1000px</span>);</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">1s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateX</span>(-<span class="number">50%</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.img-box</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">1s</span>;</span><br><span class="line">  <span class="attribute">transform-origin</span>: right;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#000000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.img-box</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">rotateY</span>(<span class="number">180deg</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.img-box</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">object-fit</span>: cover;</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">  <span class="attribute">backface-visibility</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.img-box</span> <span class="selector-tag">img</span><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">rotateY</span>(<span class="number">180deg</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.detail</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.detail</span> <span class="selector-tag">span</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>);</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">2em</span>;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">500</span>;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">0.5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.detail</span> <span class="selector-tag">span</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">letter-spacing</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">text-shadow</span>: <span class="number">1px</span> <span class="number">1px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>, <span class="number">0.2</span>),</span><br><span class="line">    <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>, <span class="number">0.2</span>), <span class="number">3px</span> <span class="number">3px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>, <span class="number">0.2</span>),</span><br><span class="line">    <span class="number">4px</span> <span class="number">4px</span> <span class="number">0</span> <span class="number">#ccc</span>, <span class="number">5px</span> <span class="number">5px</span> <span class="number">0</span> <span class="number">#ccc</span>, <span class="number">6px</span> <span class="number">6px</span> <span class="number">0</span> <span class="number">#ccc</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/25/Css3d/" data-id="clr4l783a0006x24jgzn98wws" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2022/04/25/littleTip/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      前端小技巧
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2022/03/25/ReactDemos/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">一些React使用的例子</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank">cross</a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="fanjunsheng&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

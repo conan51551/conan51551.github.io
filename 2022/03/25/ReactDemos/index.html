@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <title>
+    一些React使用的例子 |
+    
+    fanjunsheng&#39;s Blog
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ReactDemos" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    一些React使用的例子
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/03/25/ReactDemos/" class="article-date">
+  <time datetime="2022-03-25T09:50:59.000Z" itemprop="datePublished">2022-03-25</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>React一些功能的使用方式</p>
+<span id="more"></span>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p>ref有三种使用方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.objRef = React.createRef() <span class="comment">// create ref使用</span></span><br><span class="line"><span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// console.log(`span1: $&#123;this.refs.ref1.textContent&#125;`)</span></span><br><span class="line">    <span class="comment">// console.log(`span2: $&#123;this.ref2.textContent&#125;`)</span></span><br><span class="line">    <span class="comment">// console.log(`span3: $&#123;this.ref3.current.textContent&#125;`)</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.refs.stringRef.textContent = <span class="string">&#x27;string ref got&#x27;</span></span><br><span class="line">      <span class="built_in">this</span>.methodRef.textContent = <span class="string">&#x27;method ref got&#x27;</span></span><br><span class="line">      <span class="built_in">this</span>.objRef.current.textContent = <span class="string">&#x27;obj ref got&#x27;</span></span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&quot;stringRef&quot;</span>&gt;</span>span1<span class="tag">&lt;/<span class="name">p</span>&gt;</span> // sting ref使用</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&#123;ele</span> =&gt;</span> (this.methodRef = ele)&#125;&gt;span3<span class="tag">&lt;/<span class="name">p</span>&gt;</span>// function ref使用</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&#123;this.objRef&#125;</span>&gt;</span>span3<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="forward-ref"><a href="#forward-ref" class="headerlink" title="forward ref"></a>forward ref</h2><p>当ref的是一个函数组件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> TargetComponent = React.forwardRef(<span class="function">(<span class="params">props, ref</span>) =&gt;</span> (</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">ref</span>=<span class="string">&#123;ref&#125;</span> /&gt;</span></span></span><br><span class="line">))</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Comp</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>()</span><br><span class="line">    <span class="built_in">this</span>.ref = React.createRef()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.ref.current.value = <span class="string">&#x27;ref get input&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">TargetComponent</span> <span class="attr">ref</span>=<span class="string">&#123;this.ref&#125;</span> /&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/03/25/ReactDemos/" data-id="clr4l783c000dx24j4tj19c93" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2022/04/25/Css3d/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      css实现的3D效果
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2022/03/24/ReactCodeSlice/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">React源码中的片段</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank">cross</a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="fanjunsheng&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

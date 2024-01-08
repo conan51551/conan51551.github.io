@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <title>
+    git 一些实用操作 |
+    
+    fanjunsheng&#39;s Blog
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-GitOperate" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    git 一些实用操作
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/04/26/GitOperate/" class="article-date">
+  <time datetime="2022-04-26T02:34:39.000Z" itemprop="datePublished">2022-04-26</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>日常开发中 git 是经常用到的，下面记录一写实际会用到的 git 常用操作</p>
+<span id="more"></span>
+
+<h2 id="回退-master-提交"><a href="#回退-master-提交" class="headerlink" title="回退 master 提交"></a>回退 master 提交</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git checkout master // 切换至master</span><br><span class="line">git checkout -b master-backup  // 备份master</span><br><span class="line">git push origin master-backup // 将备份推送到origin</span><br><span class="line">git checkout master // 切换至master</span><br><span class="line">git reset [HEAD^1 | 052e($commit id)]   // reset上一次或指定提交记录</span><br><span class="line">git checkout . // 丢弃本地的修改</span><br><span class="line">git push --delete origin master // 将origin master删除</span><br><span class="line">git push origin master // 将本地master推到origin</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询一个月内某个人的代码提交行数"><a href="#查询一个月内某个人的代码提交行数" class="headerlink" title="查询一个月内某个人的代码提交行数"></a>查询一个月内某个人的代码提交行数</h2><p>输出的样式类似 <code>added lines: 1659, removed lines: 450, total lines: 1209</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --author=&quot;name&quot; --pretty=tformat: --numstat --since=&#x27;1 month ago&#x27;  | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="合并多条-commit"><a href="#合并多条-commit" class="headerlink" title="合并多条 commit"></a>合并多条 commit</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~3  // 合并最近3条commit</span><br></pre></td></tr></table></figure>
+
+<h2 id="merge-的时候合并合并多条-commit-为-1-条"><a href="#merge-的时候合并合并多条-commit-为-1-条" class="headerlink" title="merge 的时候合并合并多条 commit 为 1 条"></a>merge 的时候合并合并多条 commit 为 1 条</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge --squash &#123;commit id&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/26/GitOperate/" data-id="clr4l783b0008x24j3tg63o8c" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2022/08/16/Chromecookie%E9%89%B4%E6%9D%83/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      Chromecookie鉴权
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2022/04/25/littleTip/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">前端小技巧</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank">cross</a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="fanjunsheng&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>
