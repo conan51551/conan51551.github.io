@@ -184,7 +184,7 @@
 <li>外部生成了文件（.map），内联没有。</li>
 <li>内联构建速度更快。</li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>测试环境用<code>source-map</code> =&gt; <code>cheap-module-souce-map</code><br>正式环境用<code>nosources-source-map</code>=&gt;<code>hidden-source-map</code></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>测试环境用<code>source-map</code> &#x3D;&gt; <code>cheap-module-souce-map</code><br>正式环境用<code>nosources-source-map</code>&#x3D;&gt;<code>hidden-source-map</code></p>
 <h1 id="map文件解构"><a href="#map文件解构" class="headerlink" title=".map文件解构"></a>.map文件解构</h1><p>下面是一个<code>bundle.js</code>文件生成的<code>.map</code>文件</p>
 <p>原始文件</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
@@ -273,12 +273,12 @@
 <hr>
 <h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p><em>主线程从”任务队列”中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）。</em></p>
 <p>这边有一个很重要的点就是:<br><strong>执行栈中的代码总是在读取任务队列之前执行</strong></p>
-<p><img src="../img/bg2014100802.png" alt="bg2014100802"></p>
+<p><img src="/../img/bg2014100802.png" alt="bg2014100802"></p>
 <p>主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码调用各种外部API，它们在”任务队列”中加入各种事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取”任务队列”，依次执行那些事件所对应的回调函数。</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> req = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">req.open(<span class="string">&#x27;GET&#x27;</span>, url);</span><br><span class="line">req.send();</span><br><span class="line">req.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;    </span><br><span class="line">req.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;   </span><br></pre></td></tr></table></figure>
 
 <p><code>req.onload</code>和<code>req.onerror</code>在<code>send()</code>的前后无关紧要，因为他们是执行栈的一部分，只有执行完他们，才会去读取<code>send()</code>加入任务队列中的回调函数</p>
-<h4 id="Node-js的事件循环"><a href="#Node-js的事件循环" class="headerlink" title="Node.js的事件循环"></a>Node.js的事件循环</h4><p><img src="../img/bg2014100803.png" alt="bg2014100803"></p>
+<h4 id="Node-js的事件循环"><a href="#Node-js的事件循环" class="headerlink" title="Node.js的事件循环"></a>Node.js的事件循环</h4><p><img src="/../img/bg2014100803.png" alt="bg2014100803"></p>
 <p>Node.js的运行机制如下</p>
 <ol>
 <li>V8引擎解析js</li>
@@ -286,12 +286,12 @@
 <li>libuv库负责Node API的执行。它将不同任务分配给不同队列形成事件循环，以异步方式将任务执行结果返回给V8引擎</li>
 <li>V8引擎再将结果返回给用户</li>
 </ol>
-<p>Node.js的事件循环与浏览器不一样，它每一轮事件循环分6个部分，依次执行。每个阶段都有一个先进先出的回调函数队列。只有一个阶段的回调函数队列清空了，该执行的回调函数都执行了，事件循环才会进入下一个阶段。<br><img src="../img/bg2018022304.png" alt="bg2018022304"></p>
+<p>Node.js的事件循环与浏览器不一样，它每一轮事件循环分6个部分，依次执行。每个阶段都有一个先进先出的回调函数队列。只有一个阶段的回调函数队列清空了，该执行的回调函数都执行了，事件循环才会进入下一个阶段。<br><img src="/../img/bg2018022304.png" alt="bg2018022304"></p>
 <ul>
 <li>timmer:这个是定时器阶段，处理setTimeout()和setInterval()的回调函数。进入这个阶段后，主线程会检查一下当前时间，是否满足定时器的条件。如果满足就执行回调函数，否则就离开这个阶段。</li>
-<li>I/O callbacks: 这个阶段执行一些系统操作的回调。比如TCP错误，如一个TCP socket在想要连接时收到ECONNREFUSED, 类unix系统会等待以报告错误，这就会放到 I/O callbacks 阶段的队列执行。</li>
+<li>I&#x2F;O callbacks: 这个阶段执行一些系统操作的回调。比如TCP错误，如一个TCP socket在想要连接时收到ECONNREFUSED, 类unix系统会等待以报告错误，这就会放到 I&#x2F;O callbacks 阶段的队列执行。</li>
 <li>idle,prepare:该阶段只供 libuv 内部调用，这里可以忽略。</li>
-<li>Poll:这个阶段是轮询时间，用于等待还未返回的 I/O 事件，比如服务器的回应、用户移动鼠标等等。这个阶段的时间会比较长。如果没有其他异步任务要处理（比如到期的定时器），会一直停留在这个阶段，等待 I/O 请求返回结果。</li>
+<li>Poll:这个阶段是轮询时间，用于等待还未返回的 I&#x2F;O 事件，比如服务器的回应、用户移动鼠标等等。这个阶段的时间会比较长。如果没有其他异步任务要处理（比如到期的定时器），会一直停留在这个阶段，等待 I&#x2F;O 请求返回结果。</li>
 <li>check: <code>setImmediate</code>在这个阶段执行</li>
 <li>close callbacks：该阶段关闭请求的回调函数</li>
 </ul>
@@ -303,7 +303,7 @@
 <li>执行<code>setTimeout</code>回调，打印出105ms</li>
 </ol>
 <h3 id="宏任务和微任务"><a href="#宏任务和微任务" class="headerlink" title="宏任务和微任务"></a>宏任务和微任务</h3><p>先通过一张图片来了解宏任务与微任务的关系</p>
-<p><img src="../img/165a8667bb6e623e" alt="165a8667bb6e623e"></p>
+<p><img src="/../img/165a8667bb6e623e" alt="165a8667bb6e623e"></p>
 <ol>
 <li>执行全局同步代码</li>
 <li>全局代码执行完毕后，调用栈会清空</li>
@@ -328,9 +328,10 @@
 <p>由上代码输出结果可以看出<strong>requestAnimationFrame</strong>实际在微任务后执行，但是又在宏任务之前，从MDN定义来看，重绘是作为宏任务的一个步骤存在的，暂且列为宏任务</p>
 <p><code>requestAnimationFrame</code>可以解决定时器写的动画对网页性能的影响，因为它是在每一次重新渲染页面的时候执行，所以不会像定时器可能会在同一次渲染中多次执行修改页面的代码，也不会因为间隔时间过长引起动画不流畅</p>
 <ul>
-<li><strong>requestIdleCallback</strong>在MDN上的定义:<em>会在浏览器空闲时依次调用函数</em><br>看如下例子<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">var</span> timer = requestIdleCallback(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">      resolve();</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    输出顺序 <span class="comment">//3 4 1 2</span></span><br></pre></td></tr></table></figure>
-其实<code>requestIdleCallback</code>无论放在哪都是最后输出<br>这里我们看一下关于<code>requestIdleCallback</code>的深度解释：<strong>只有当一帧的末尾有空闲时间，才会执行回调函数</strong>，我们都知道网页一秒运行60帧，也就说一帧运行时间小于16.7ms才会运行<code>requestIdleCallback</code>的回调函数,我们对上面代码做如下改动</li>
+<li><p><strong>requestIdleCallback</strong>在MDN上的定义:<em>会在浏览器空闲时依次调用函数</em><br>看如下例子</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">var</span> timer = requestIdleCallback(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">      resolve();</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    输出顺序 <span class="comment">//3 4 1 2</span></span><br></pre></td></tr></table></figure></li>
 </ul>
+<p>其实<code>requestIdleCallback</code>无论放在哪都是最后输出<br>这里我们看一下关于<code>requestIdleCallback</code>的深度解释：<strong>只有当一帧的末尾有空闲时间，才会执行回调函数</strong>，我们都知道网页一秒运行60帧，也就说一帧运行时间小于16.7ms才会运行<code>requestIdleCallback</code>的回调函数,我们对上面代码做如下改动</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> timer = requestIdleCallback(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;,&#123;<span class="attr">timeout</span>:<span class="number">100</span>&#125;)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">  resolve();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">&#125;)</span><br><span class="line">输出顺序 <span class="comment">// 3 4 2 1</span></span><br></pre></td></tr></table></figure>
 <p>配置timeout是如果在规定的时间内没有可以运行的帧，到了规定时间就强制执行<code>requestIdleCallback</code>中的回调，不过在实际运行中就已经造成页面的卡顿了</p>
 <p>如上代码是在我浏览器上运行，这个代码执行顺序直接跟浏览器性能有关，如果Promise的运行时间小于我设施的setTimeout的时间，<code>requestIdleCallback</code>就会先于setTimeout执行。废话说了这么多，其实就是为了证明requestIdleCallback是在微任务之后执行的宏任务</p>
@@ -342,7 +343,7 @@
 
 <p>以上是一段包含<code>MutationObserver</code>的代码，从运行结果可以看出执行顺序如下:</p>
 <ol>
-<li>点击的I/O事件会将inner和outer的回调注册为宏任务，先触发inner的handler，打印click</li>
+<li>点击的I&#x2F;O事件会将inner和outer的回调注册为宏任务，先触发inner的handler，打印click</li>
 <li>发现其中有promise优先注册为微任务，setTimeout和requestAnimationFrame注册为宏任务，setAttribute修改了attributes触发MutationObserver注册为微任务</li>
 <li>执行微任务promise和observer后发现没有微任务了</li>
 <li>执行outer注册的宏任务，重复第二部流程</li>
@@ -355,7 +356,7 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
 <p>上面代码输出顺序是不确定的，因为在实际执行的时候，进入事件循环以后，有可能到了1毫秒，也可能还没到1毫秒，取决于系统当时的状况。如果没到1毫秒，那么 timers 阶段就会跳过，进入 check 阶段，先执行setImmediate的回调函数。</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">&#x27;test.js&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">  setImmediate(<span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>但是这样改进后，2一定在1之前打印，因为先进入I/O callback阶段，然后是check阶段，在第二轮循环才轮到timmer阶段</p>
+<p>但是这样改进后，2一定在1之前打印，因为先进入I&#x2F;O callback阶段，然后是check阶段，在第二轮循环才轮到timmer阶段</p>
 <ul>
 <li><strong>process.nextTick</strong>是定义一个动作，在下一轮事件轮询时执行，微任务追加在其后面。<br><code>process.nextTick</code>执行比较特殊，无论事件循环在何种阶段，都会在结束时执行</li>
 </ul>
@@ -365,7 +366,9 @@
 
 
 <ul>
-<li><strong>总结</strong>  <strong>宏任务:I/O，定时器，setImmediate，requestAnimationFrame</strong><br>  <strong>微任务：MutationObserver，Promise.then，process.nextTick</strong></li>
+<li><p><strong>总结</strong></p>
+<p>  <strong>宏任务:I&#x2F;O，定时器，setImmediate，requestAnimationFrame</strong><br>  <strong>微任务：MutationObserver，Promise.then，process.nextTick</strong></p>
+</li>
 </ul>
 <h4 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h4><p><strong>异步函数</strong>是一个使用隐式 Promise 异步操作以返回其结果的函数。异步函数旨在使异步代码看起来像同步代码，为开发者隐藏异步处理的一些复杂性。</p>
 <p>通常传递<code>Promise</code>给<code>await</code>，但是实际上可以传任意值给<code>await</code>，因为<code>await</code>会将任意值转成<code>Promise</code></p>
@@ -379,19 +382,19 @@
 
 <p>上面代码的输出顺序其实是错误的，<code>then</code>关联到一个已经<code>fulfilled</code>的<code>Promise</code>上，V8引擎的一个BUG导致上面的代码<code>await</code>跳过了微任务，先打印出了<code>after:await</code>。</p>
 <p>官方给的解释是<em>这个 bug 的原因是我们违反了 es 的规范，但它后来给了我们关于优化的灵感。</em></p>
-<p><img src="../img//v8.svg" alt="v8"></p>
+<p><img src="/../img/v8.svg" alt="v8"></p>
 <p>可以看到其实在await的实现中，不论传参是什么，都会再包一层promise，因此事件被加入了下一次的task中，所以导致了输出顺序问题。<br>分析一下<code>await</code>具体做了什么操作：</p>
 <ol>
 <li>将 v 转换为 Promise- v 代表传递给 await 的值。</li>
 <li>给 Promise 附加处理程序以便稍后恢复异步函数。</li>
 <li>挂起异步函数并返回 implicit_promise 给调用者。<br>从性能角度分析，第一步多创建了<code>Promise</code>包装器，然后立即解析<code>Promise</code>包装器v的值，这两行多创建了一个<code>Promise</code>，同时创建<code>Promise</code>会导致一个额外的<code>PromiseReactionJob</code>，<code>resolvePromise</code>会导致一个额外的<code>PromiseResolveThenableJob</code></li>
 </ol>
-<p><img src="../img//await-code-comparison.svg" alt="await-code-comparison"></p>
+<p><img src="/../img/await-code-comparison.svg" alt="await-code-comparison"></p>
 <p>而改进过后，会在包装Promise的时候先判断传入的是不是一个Promise对象，如果是直接沿用这个Promise，从而减少了创建的promise数量和微任务的数量。<code>throwaway</code>是为了恢复foo的执行，因此优化之后的<code>await</code>就只创建这一个新的<code>Promise</code></p>
 <p>内容参考:</p>
 <ul>
-<li> MDN WEB 文档</li>
-<li> &lt;&lt;ES6标准指南&gt;&gt;(阮一峰)</li>
+<li>MDN WEB 文档</li>
+<li>&lt;&lt;ES6标准指南&gt;&gt;(阮一峰)</li>
 <li><a href="http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html">阮一峰博客：网页性能详解</a></li>
 <li>segmentfault中的全沾开发(huā) <a href="https://segmentfault.com/a/1190000016022069#articleHeader11">https://segmentfault.com/a/1190000016022069#articleHeader11</a></li>
 <li><a href="https://v8.js.cn/blog/fast-async/">v8引擎中文官网(更快的异步函数和 Promise)</a></li>
