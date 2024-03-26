@@ -76,6 +76,8 @@
 <h2 id="查询一个月内某个人的代码提交行数"><a href="#查询一个月内某个人的代码提交行数" class="headerlink" title="查询一个月内某个人的代码提交行数"></a>查询一个月内某个人的代码提交行数</h2><p>输出的样式类似 <code>added lines: 1659, removed lines: 450, total lines: 1209</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --author=&quot;name&quot; --pretty=tformat: --numstat --since=&#x27;1 month ago&#x27;  | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27;</span><br></pre></td></tr></table></figure>
 
+<h2 id="查询提交前五的人"><a href="#查询提交前五的人" class="headerlink" title="查询提交前五的人"></a>查询提交前五的人</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --pretty=&#x27;%aN&#x27; | sort | uniq -c | sort -k1 -n -r | head -n 5</span><br></pre></td></tr></table></figure>
+
 <h2 id="合并多条-commit"><a href="#合并多条-commit" class="headerlink" title="合并多条 commit"></a>合并多条 commit</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~3  // 合并最近3条commit</span><br></pre></td></tr></table></figure>
 
 <h2 id="merge-的时候合并合并多条-commit-为-1-条"><a href="#merge-的时候合并合并多条-commit-为-1-条" class="headerlink" title="merge 的时候合并合并多条 commit 为 1 条"></a>merge 的时候合并合并多条 commit 为 1 条</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge --squash &#123;commit id&#125;</span><br></pre></td></tr></table></figure>
@@ -83,7 +85,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/04/26/GitOperate/" data-id="clr4l783b0008x24j3tg63o8c" class="article-share-link">
+      <a data-url="http://example.com/2022/04/26/GitOperate/" data-id="clu7qbi1200068d4j163bgbuv" class="article-share-link">
         分享
       </a>
       

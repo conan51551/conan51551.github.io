@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>记录</title>
+    <url>/2021/12/07/%E7%BD%97%E6%9B%BC%E7%BD%97%E5%85%B0/</url>
+    <content><![CDATA[<p><strong>成功只是一时的<br>失败却是主旋律<br>但是如何面对失败<br>却把人分成了不同的样子<br>有的人会被失败击垮<br>有的人能够不断的爬起来继续向前<br>我想真正的成熟应该并不是追求完美<br>而是直面自己的缺憾<br>这才是生活的本质<br>罗曼罗兰说过<br>”这个世界上只有一种真正的英雄主义，那就是认清生活的真相，并且任然热爱它“</strong><br>            <div style="text-align:right;"><em><strong>— 贺炜2014年世界杯送别西班牙时的解说</strong></em></p>
+</div>
+
+
+]]></content>
+      <tags>
+        <tag>Notes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>用纯CSS实现滚动阴影</title>
     <url>/2023/03/10/BackgroundAttachment/</url>
     <content><![CDATA[<p>首先，介绍一下 <code>background-attachment</code>，如果指定了 <code>background-image</code> ，那么 <code>background-attachment</code> 决定背景是在视口中固定的还是随着包含它的区块滚动的。</p>
@@ -33,6 +45,45 @@
 ]]></content>
   </entry>
   <entry>
+    <title>git 一些实用操作</title>
+    <url>/2022/04/26/GitOperate/</url>
+    <content><![CDATA[<p>日常开发中 git 是经常用到的，下面记录一写实际会用到的 git 常用操作</p>
+<span id="more"></span>
+
+<h2 id="回退-master-提交"><a href="#回退-master-提交" class="headerlink" title="回退 master 提交"></a>回退 master 提交</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git checkout master // 切换至master</span><br><span class="line">git checkout -b master-backup  // 备份master</span><br><span class="line">git push origin master-backup // 将备份推送到origin</span><br><span class="line">git checkout master // 切换至master</span><br><span class="line">git reset [HEAD^1 | 052e($commit id)]   // reset上一次或指定提交记录</span><br><span class="line">git checkout . // 丢弃本地的修改</span><br><span class="line">git push --delete origin master // 将origin master删除</span><br><span class="line">git push origin master // 将本地master推到origin</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询一个月内某个人的代码提交行数"><a href="#查询一个月内某个人的代码提交行数" class="headerlink" title="查询一个月内某个人的代码提交行数"></a>查询一个月内某个人的代码提交行数</h2><p>输出的样式类似 <code>added lines: 1659, removed lines: 450, total lines: 1209</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;name&quot; --pretty=tformat: --numstat --since=&#x27;1 month ago&#x27;  | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询提交前五的人"><a href="#查询提交前五的人" class="headerlink" title="查询提交前五的人"></a>查询提交前五的人</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --pretty=&#x27;%aN&#x27; | sort | uniq -c | sort -k1 -n -r | head -n 5</span><br></pre></td></tr></table></figure>
+
+<h2 id="合并多条-commit"><a href="#合并多条-commit" class="headerlink" title="合并多条 commit"></a>合并多条 commit</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~3  // 合并最近3条commit</span><br></pre></td></tr></table></figure>
+
+<h2 id="merge-的时候合并合并多条-commit-为-1-条"><a href="#merge-的时候合并合并多条-commit-为-1-条" class="headerlink" title="merge 的时候合并合并多条 commit 为 1 条"></a>merge 的时候合并合并多条 commit 为 1 条</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git merge --squash &#123;commit id&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端小技巧</title>
+    <url>/2022/04/25/littleTip/</url>
+    <content><![CDATA[<p>记录一些看到的小技巧(虽然可能没用~)，</p>
+<span id="more"></span>
+
+<h2 id="indexOf-按位操作简化"><a href="#indexOf-按位操作简化" class="headerlink" title="indexOf 按位操作简化"></a>indexOf 按位操作简化</h2><p>避免写很多的&gt;-1</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//longhand</span></span><br><span class="line"><span class="keyword">if</span> (arr.indexOf(item) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="comment">// item found</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (arr.indexOf(item) === -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="comment">// item not found</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//shorthand</span></span><br><span class="line"><span class="keyword">if</span> (~arr.indexOf(item)) &#123;</span><br><span class="line">  <span class="comment">// item found</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!~arr.indexOf(item)) &#123;</span><br><span class="line">  <span class="comment">// item not found</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="简短函数调用"><a href="#简短函数调用" class="headerlink" title="简短函数调用"></a>简短函数调用</h2><p>有时候会根据一个函数的返回值判断执行某个函数（比如每次提交表单的时候，会根据<code>validateData</code>函数判断是否通过）</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Longhand</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;test1&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;test2&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> test3 = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (test3 == <span class="number">1</span>) &#123;</span><br><span class="line">  test1();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  test2();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Shorthand</span></span><br><span class="line">(test3 === <span class="number">1</span> ? test1 : test2)();</span><br></pre></td></tr></table></figure>
+
+<h2 id="双按位操作取整数"><a href="#双按位操作取整数" class="headerlink" title="双按位操作取整数"></a>双按位操作取整数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Longhand</span></span><br><span class="line"><span class="built_in">Math</span>.floor(<span class="number">1.9</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// Shorthand</span></span><br><span class="line">~~<span class="number">1.9</span>; <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>css实现的3D效果</title>
     <url>/2022/04/25/Css3d/</url>
     <content><![CDATA[<p>一个使用<code>transform-style: preserve-3d;</code>的动画效果，来自叶总的分享，挺有意思，这里记录一下</p>
@@ -42,6 +93,159 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;img-box&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./imgs/0.jpeg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./imgs/1.jpeg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;detail&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span>&gt;</span>索隆<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: aquamarine;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">10px</span> <span class="number">20px</span> <span class="number">40px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.25</span>);</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">perspective</span>(<span class="number">1000px</span>);</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">1s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateX</span>(-<span class="number">50%</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.img-box</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">1s</span>;</span><br><span class="line">  <span class="attribute">transform-origin</span>: right;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#000000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.img-box</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">rotateY</span>(<span class="number">180deg</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.img-box</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">object-fit</span>: cover;</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">  <span class="attribute">backface-visibility</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.img-box</span> <span class="selector-tag">img</span><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">rotateY</span>(<span class="number">180deg</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.detail</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.detail</span> <span class="selector-tag">span</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>);</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">2em</span>;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">500</span>;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">0.5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.detail</span> <span class="selector-tag">span</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">letter-spacing</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">text-shadow</span>: <span class="number">1px</span> <span class="number">1px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>, <span class="number">0.2</span>),</span><br><span class="line">    <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>, <span class="number">0.2</span>), <span class="number">3px</span> <span class="number">3px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">41</span>, <span class="number">250</span>, <span class="number">180</span>, <span class="number">0.2</span>),</span><br><span class="line">    <span class="number">4px</span> <span class="number">4px</span> <span class="number">0</span> <span class="number">#ccc</span>, <span class="number">5px</span> <span class="number">5px</span> <span class="number">0</span> <span class="number">#ccc</span>, <span class="number">6px</span> <span class="number">6px</span> <span class="number">0</span> <span class="number">#ccc</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>一些React使用的例子</title>
+    <url>/2022/03/25/ReactDemos/</url>
+    <content><![CDATA[<p>React一些功能的使用方式</p>
+<span id="more"></span>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p>ref有三种使用方式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">this</span>.objRef = React.createRef() <span class="comment">// create ref使用</span></span><br><span class="line"><span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// console.log(`span1: $&#123;this.refs.ref1.textContent&#125;`)</span></span><br><span class="line">    <span class="comment">// console.log(`span2: $&#123;this.ref2.textContent&#125;`)</span></span><br><span class="line">    <span class="comment">// console.log(`span3: $&#123;this.ref3.current.textContent&#125;`)</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.refs.stringRef.textContent = <span class="string">&#x27;string ref got&#x27;</span></span><br><span class="line">      <span class="built_in">this</span>.methodRef.textContent = <span class="string">&#x27;method ref got&#x27;</span></span><br><span class="line">      <span class="built_in">this</span>.objRef.current.textContent = <span class="string">&#x27;obj ref got&#x27;</span></span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&quot;stringRef&quot;</span>&gt;</span>span1<span class="tag">&lt;/<span class="name">p</span>&gt;</span> // sting ref使用</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&#123;ele</span> =&gt;</span> (this.methodRef = ele)&#125;&gt;span3<span class="tag">&lt;/<span class="name">p</span>&gt;</span>// function ref使用</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&#123;this.objRef&#125;</span>&gt;</span>span3<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="forward-ref"><a href="#forward-ref" class="headerlink" title="forward ref"></a>forward ref</h2><p>当ref的是一个函数组件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> TargetComponent = React.forwardRef(<span class="function">(<span class="params">props, ref</span>) =&gt;</span> (</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">ref</span>=<span class="string">&#123;ref&#125;</span> /&gt;</span></span></span><br><span class="line">))</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Comp</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>()</span><br><span class="line">    <span class="built_in">this</span>.ref = React.createRef()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.ref.current.value = <span class="string">&#x27;ref get input&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">TargetComponent</span> <span class="attr">ref</span>=<span class="string">&#123;this.ref&#125;</span> /&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>React源码中的片段</title>
+    <url>/2022/03/24/ReactCodeSlice/</url>
+    <content><![CDATA[<p>一些读 react 源码的时候发现的一些实用的代码片段</p>
+<span id="more"></span>
+
+
+<p>读取函数中除了前两个参数的剩余参数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElement</span>(<span class="params">type, config, children</span>) </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">const</span> childrenLength = <span class="built_in">arguments</span>.length - <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">if</span> (childrenLength === <span class="number">1</span>) &#123;</span><br><span class="line">    props.children = children;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childrenLength &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> childArray = <span class="built_in">Array</span>(childrenLength);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; childrenLength; i++) &#123;</span><br><span class="line">      childArray[i] = <span class="built_in">arguments</span>[i + <span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    props.children = childArray;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>BUg集合</title>
+    <url>/2021/12/30/bugCollection/</url>
+    <content><![CDATA[<p>这里用来记载一些平时开发会遇到的坑，持续更新</p>
+<span id="more"></span>
+
+<h1 id="zorro-antd-的虚拟滚动列表乱序问题"><a href="#zorro-antd-的虚拟滚动列表乱序问题" class="headerlink" title="zorro antd 的虚拟滚动列表乱序问题"></a>zorro antd 的虚拟滚动列表乱序问题</h1><p>使用了 nzVirtualScroll 虚拟滚动，发现切换数据展示时数据会乱序<br>只要在每次赋值之前将列表清空即可</p>
+<h1 id="pre-标签自动换行问题"><a href="#pre-标签自动换行问题" class="headerlink" title="pre 标签自动换行问题"></a>pre 标签自动换行问题</h1><p>pre 标签默认文字过长不会换行</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="attribute">white-space</span>: pre-wrap; <span class="comment">/* css3.0 */</span></span><br><span class="line"><span class="attribute">white-space</span>: -moz-pre-wrap; <span class="comment">/* Firefox */</span></span><br><span class="line"><span class="attribute">white-space</span>: -pre-wrap; <span class="comment">/* Opera 4-6 */</span></span><br><span class="line"><span class="attribute">white-space</span>: -o-pre-wrap; <span class="comment">/* Opera 7 */</span></span><br><span class="line"><span class="attribute">word-wrap</span>: break-word; <span class="comment">/* Internet Explorer 5.5+ */</span></span><br></pre></td></tr></table></figure>
+
+<p>加上以上代码即可</p>
+]]></content>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>观察者与发布订阅</title>
+    <url>/2021/12/09/Observe/</url>
+    <content><![CDATA[<p>用每个互联网工作者都能看懂的栗子说明发布订阅与观察者区别</p>
+<span id="more"></span>
+
+<h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><!-- more -->
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observe</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> __message = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="title">on</span>(<span class="params">type, fn</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">this</span>.__message[type] === <span class="string">&quot;undefined&quot;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.__message[type] = [fn];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.__message[type].push(fn);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="title">subscribe</span>(<span class="params">type, args</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">this</span>.__message[type]) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="built_in">this</span>.__message[type].length; i++) &#123;</span><br><span class="line">      <span class="built_in">this</span>.__message[type][i].call(<span class="built_in">this</span>, args);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="title">off</span>(<span class="params">type, fn</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.__message[type] <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">      <span class="keyword">let</span> i = <span class="built_in">this</span>.__message[type].length - <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">for</span> (; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="built_in">this</span>.__message[type][i] === fn &amp;&amp; <span class="built_in">this</span>.__message[type].splice(i, <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Observe.on(<span class="string">&quot;say&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;say&quot;</span>, <span class="string">&quot;123&quot;</span>);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;say&quot;</span>, <span class="string">&quot;321&quot;</span>);</span><br><span class="line"></span><br><span class="line">Observe.on(<span class="string">&quot;hello&quot;</span>, hello);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;</span><br><span class="line">Observe.subscribe(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;hello&quot;</span>);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>);</span><br><span class="line">Observe.off(<span class="string">&quot;hello&quot;</span>, hello);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h1><h2 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 调度中心</span></span><br><span class="line"><span class="keyword">let</span> eventEmitter = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存列表，存放 event 及 fn</span></span><br><span class="line">eventEmitter.list = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅</span></span><br><span class="line">eventEmitter.on = <span class="function"><span class="keyword">function</span> (<span class="params">event, fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _this = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">// 如果对象中没有对应的 event 值，也就是说明没有订阅过，就给 event 创建个缓存列表</span></span><br><span class="line">    <span class="comment">// 如有对象中有相应的 event 值，把 fn 添加到对应 event 的缓存列表里</span></span><br><span class="line">    (_this.list[event] || (_this.list[event] = [])).push(fn);</span><br><span class="line">    <span class="keyword">return</span> _this;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布</span></span><br><span class="line">eventEmitter.emit = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _this = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">// 第一个参数是对应的 event 值，直接用数组的 shift 方法取出</span></span><br><span class="line">    <span class="keyword">let</span> event = [].shift.call(<span class="built_in">arguments</span>),</span><br><span class="line">        fns = [..._this.list[event]];</span><br><span class="line">    <span class="comment">// 如果缓存列表里没有 fn 就返回 false</span></span><br><span class="line">    <span class="keyword">if</span> (!fns || fns.length === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历 event 值对应的缓存列表，依次执行 fn</span></span><br><span class="line">    fns.forEach(<span class="function"><span class="params">fn</span> =&gt;</span> &#123;</span><br><span class="line">        fn.apply(_this, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> _this;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="调用-1"><a href="#调用-1" class="headerlink" title="调用"></a>调用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">user1</span> (<span class="params">content</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户1订阅了:&#x27;</span>, content);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">user2</span> (<span class="params">content</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户2订阅了:&#x27;</span>, content);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅</span></span><br><span class="line">eventEmitter.on(<span class="string">&#x27;article&#x27;</span>, user1);</span><br><span class="line">eventEmitter.on(<span class="string">&#x27;article&#x27;</span>, user2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布</span></span><br><span class="line">eventEmitter.emit(<span class="string">&#x27;article&#x27;</span>, <span class="string">&#x27;Javascript 发布-订阅模式&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>网上关于两者区别说的已经很多了，结合我自己的思考，举个栗子总结一下。平时开发中与测试打交道是不可避免的，下面就两种场景分析一下</p>
+<h2 id="观察者"><a href="#观察者" class="headerlink" title="观察者"></a>观察者</h2><p>开发者直接对接测试，测试有发现问题直接通知给开发者。</p>
+<ul>
+<li>优点：测试发现一个bug就通知一遍开发，响应及时</li>
+<li>缺点：开发与测试耦合在一起，如果开发请假，测试就不好通知，因此开发与测试需同时引入</li>
+</ul>
+<h2 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h2><p>有一套BUG单系统，测试发现问题提BUG单，开发者去系统中订阅派发给自己的BUG单。</p>
+<ul>
+<li>优点：不管是开发请假还是测试请假，系统都在，双方都可以在BUG单系统上执行自己的操作。</li>
+<li>缺点：同时要维护一套BUG单系统，增加了成本</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SourceMap</title>
+    <url>/2021/12/06/SourceMap/</url>
+    <content><![CDATA[<p><strong><code>source map</code>是为了解决即使打包过后的代码，也可以找到具体的报错位置，使我们的<code>debug</code>代码变得更轻松</strong></p>
+<span id="more"></span>
+
+<h1 id="Webpack中的配置"><a href="#Webpack中的配置" class="headerlink" title="Webpack中的配置"></a>Webpack中的配置</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;   </span><br><span class="line">    <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,  </span><br><span class="line">    <span class="attr">output</span>: &#123;      </span><br><span class="line">        <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,      </span><br><span class="line">        <span class="attr">path</span>: path.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>)  </span><br><span class="line">    &#125;,  </span><br><span class="line">    <span class="attr">devtool</span>: <span class="string">&quot;source-map&quot;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中devtool有20多种不同取值，分别生成不同类型<code>Source Map</code>,主要有以下几种</p>
+<ul>
+<li><code>source-map</code>：外部。可以查看错误代码准确信息和源代码的错误位置。</li>
+<li><code>inline-source-map</code>：内联。只生成一个内联 <code>Source Map</code>，可以查看错误代码准确信息和源代码的错误位置</li>
+<li><code>hidden-source-map</code>：外部。可以查看错误代码准确信息，但不能追踪源代码错误，只能提示到构建后代码的错误位置。</li>
+<li><code>eval-source-map</code>：内联。每一个文件都生成对应的 <code>Source Map</code>，都在 <code>eval</code> 中，可以查看错误代码准确信息 和 源代码的错误位置。</li>
+<li><code>nosources-source-map</code>：外部。可以查看错误代码错误原因，但不能查看错误代码准确信息，并且没有任何源代码信息。</li>
+<li><code>cheap-source-map</code>：外部。可以查看错误代码准确信息和源代码的错误位置，只能把错误精确到整行，忽略列。</li>
+<li><code>cheap-module-source-map</code>：外部。可以错误代码准确信息和源代码的错误位置，<code>module</code> 会加入 <code>loader</code> 的 <code>Source Map</code>。</li>
+</ul>
+<p>内联和外部的区别：</p>
+<ol>
+<li>外部生成了文件（.map），内联没有。</li>
+<li>内联构建速度更快。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>测试环境用<code>source-map</code> &#x3D;&gt; <code>cheap-module-souce-map</code><br>正式环境用<code>nosources-source-map</code>&#x3D;&gt;<code>hidden-source-map</code></p>
+<h1 id="map文件解构"><a href="#map文件解构" class="headerlink" title=".map文件解构"></a>.map文件解构</h1><p>下面是一个<code>bundle.js</code>文件生成的<code>.map</code>文件</p>
+<p>原始文件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
+
+<p>打包后的文件 </p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/******/</span></span><br><span class="line">(<span class="function">() =&gt;</span> &#123; <span class="comment">// webpackBootstrap   </span></span><br><span class="line">    <span class="keyword">var</span> __webpack_exports__ = &#123;&#125;;  </span><br><span class="line">    <span class="comment">/*!**********************!*\    </span></span><br><span class="line"><span class="comment">      !*** ./src/index.js ***!     </span></span><br><span class="line"><span class="comment">      \**********************/</span>   </span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span>;   </span><br><span class="line">    <span class="built_in">console</span>.log(a);   </span><br><span class="line">    <span class="comment">/******/</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">//# sourceMappingURL=bundle.js.map</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">    <span class="string">&quot;version&quot;</span>: <span class="number">3</span>,  <span class="comment">// sourceMap版本</span></span><br><span class="line">    <span class="string">&quot;sources&quot;</span>: [  <span class="comment">// 转换前的文件   </span></span><br><span class="line">        <span class="string">&quot;webpack://learn-source-map/./src/index.js&quot;</span>   </span><br><span class="line">    ],  </span><br><span class="line">    <span class="string">&quot;names&quot;</span>: [],  <span class="comment">// 转换钱所有变量名  </span></span><br><span class="line">    <span class="string">&quot;mappings&quot;</span>: <span class="string">&quot;AAAA;AACA,c&quot;</span>,   <span class="comment">// 记录位置信息的字符串</span></span><br><span class="line">    <span class="string">&quot;file&quot;</span>: <span class="string">&quot;bundle.js&quot;</span>,  <span class="comment">// 转换后的文件名</span></span><br><span class="line">    <span class="string">&quot;sourcesContent&quot;</span>: [ <span class="comment">// 转换前文件原始内容    </span></span><br><span class="line">        <span class="string">&quot;var a = 1;\r\nconsole.log(a);&quot;</span>  </span><br><span class="line">    ],   </span><br><span class="line">    <span class="string">&quot;sourceRoot&quot;</span>: <span class="string">&quot;&quot;</span> <span class="comment">// 转换钱文件的所在目录</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>mappings</code>要单独拿出来理解一下</p>
+<ul>
+<li><code>；</code>表示不同行，每个分号都表示转换后源码的一行 （以此为例就是分了两行）</li>
+<li><code>，</code>表示对应转换后源码的一个位置(以此为例就是AAACA,c表示<code>console</code>和<code>log(a)</code>)</li>
+<li>每个字母表示不同的位置转换(每个字母表示不同意思，最多由5个字母组成）<ol>
+<li>第一位，表示这个位置在（转换后的代码的）的第几列。</li>
+<li>第二位，表示这个位置属于 sources 属性中的哪一个文件。</li>
+<li>第三位，表示这个位置属于转换前代码的第几行。</li>
+<li>第四位，表示这个位置属于转换前代码的第几列。</li>
+<li>第五位，表示这个位置属于 names 属性中的哪一个变量。</li>
+</ol>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>日本旅行计划</title>
+    <url>/2019/05/29/Japen2019/</url>
+    <content><![CDATA[<h1 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h1><h2 id="大阪"><a href="#大阪" class="headerlink" title="大阪"></a>大阪</h2><h3 id="游玩"><a href="#游玩" class="headerlink" title="游玩"></a>游玩</h3><ul>
+<li>心斋桥</li>
+</ul>
+<h3 id="购物"><a href="#购物" class="headerlink" title="购物"></a>购物</h3><span id="more"></span>
+<h1 id="Day2"><a href="#Day2" class="headerlink" title="Day2"></a>Day2</h1><h2 id="大阪-1"><a href="#大阪-1" class="headerlink" title="大阪"></a>大阪</h2><ul>
+<li>环球影城</li>
+</ul>
+<h1 id="Day3"><a href="#Day3" class="headerlink" title="Day3"></a>Day3</h1><h2 id="大阪-2"><a href="#大阪-2" class="headerlink" title="大阪"></a>大阪</h2><ul>
+<li>心斋桥</li>
+<li>道顿堀</li>
+</ul>
+<img src="/images/japanevisu.jpg" width="200" style="margin:0"/>
+
+<h3 id="美食"><a href="#美食" class="headerlink" title="美食"></a>美食</h3><ul>
+<li>道顿堀螃蟹三吃</li>
+</ul>
+<h1 id="Day4"><a href="#Day4" class="headerlink" title="Day4"></a>Day4</h1><h2 id="大阪-京都"><a href="#大阪-京都" class="headerlink" title="大阪-京都"></a>大阪-京都</h2><h1 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h1><h2 id="京都"><a href="#京都" class="headerlink" title="京都"></a>京都</h2><h1 id="Day6"><a href="#Day6" class="headerlink" title="Day6"></a>Day6</h1><h2 id="京都-奈良-大阪"><a href="#京都-奈良-大阪" class="headerlink" title="京都-奈良-大阪"></a>京都-奈良-大阪</h2><h3 id="游玩-1"><a href="#游玩-1" class="headerlink" title="游玩"></a>游玩</h3><ul>
+<li>奈良公園</li>
+<li>春日大社</li>
+<li>東大寺 -&gt;二月堂-&gt;三月堂 到若草山</li>
+</ul>
+<h3 id="美食-1"><a href="#美食-1" class="headerlink" title="美食"></a>美食</h3><ul>
+<li>志津香釜飯(靠近奈良国立博物馆)</li>
+</ul>
+<h1 id="Day7"><a href="#Day7" class="headerlink" title="Day7"></a>Day7</h1><h2 id="大阪-3"><a href="#大阪-3" class="headerlink" title="大阪"></a>大阪</h2>]]></content>
+      <tags>
+        <tag>Travel</tag>
+      </tags>
   </entry>
   <entry>
     <title>事件循环</title>
@@ -203,190 +407,6 @@
       </tags>
   </entry>
   <entry>
-    <title>git 一些实用操作</title>
-    <url>/2022/04/26/GitOperate/</url>
-    <content><![CDATA[<p>日常开发中 git 是经常用到的，下面记录一写实际会用到的 git 常用操作</p>
-<span id="more"></span>
-
-<h2 id="回退-master-提交"><a href="#回退-master-提交" class="headerlink" title="回退 master 提交"></a>回退 master 提交</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git checkout master // 切换至master</span><br><span class="line">git checkout -b master-backup  // 备份master</span><br><span class="line">git push origin master-backup // 将备份推送到origin</span><br><span class="line">git checkout master // 切换至master</span><br><span class="line">git reset [HEAD^1 | 052e($commit id)]   // reset上一次或指定提交记录</span><br><span class="line">git checkout . // 丢弃本地的修改</span><br><span class="line">git push --delete origin master // 将origin master删除</span><br><span class="line">git push origin master // 将本地master推到origin</span><br></pre></td></tr></table></figure>
-
-<h2 id="查询一个月内某个人的代码提交行数"><a href="#查询一个月内某个人的代码提交行数" class="headerlink" title="查询一个月内某个人的代码提交行数"></a>查询一个月内某个人的代码提交行数</h2><p>输出的样式类似 <code>added lines: 1659, removed lines: 450, total lines: 1209</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;name&quot; --pretty=tformat: --numstat --since=&#x27;1 month ago&#x27;  | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27;</span><br></pre></td></tr></table></figure>
-
-<h2 id="合并多条-commit"><a href="#合并多条-commit" class="headerlink" title="合并多条 commit"></a>合并多条 commit</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~3  // 合并最近3条commit</span><br></pre></td></tr></table></figure>
-
-<h2 id="merge-的时候合并合并多条-commit-为-1-条"><a href="#merge-的时候合并合并多条-commit-为-1-条" class="headerlink" title="merge 的时候合并合并多条 commit 为 1 条"></a>merge 的时候合并合并多条 commit 为 1 条</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git merge --squash &#123;commit id&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>日本旅行计划</title>
-    <url>/2019/05/29/Japen2019/</url>
-    <content><![CDATA[<h1 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h1><h2 id="大阪"><a href="#大阪" class="headerlink" title="大阪"></a>大阪</h2><h3 id="游玩"><a href="#游玩" class="headerlink" title="游玩"></a>游玩</h3><ul>
-<li>心斋桥</li>
-</ul>
-<h3 id="购物"><a href="#购物" class="headerlink" title="购物"></a>购物</h3><span id="more"></span>
-<h1 id="Day2"><a href="#Day2" class="headerlink" title="Day2"></a>Day2</h1><h2 id="大阪-1"><a href="#大阪-1" class="headerlink" title="大阪"></a>大阪</h2><ul>
-<li>环球影城</li>
-</ul>
-<h1 id="Day3"><a href="#Day3" class="headerlink" title="Day3"></a>Day3</h1><h2 id="大阪-2"><a href="#大阪-2" class="headerlink" title="大阪"></a>大阪</h2><ul>
-<li>心斋桥</li>
-<li>道顿堀</li>
-</ul>
-<img src="/images/japanevisu.jpg" width="200" style="margin:0"/>
-
-<h3 id="美食"><a href="#美食" class="headerlink" title="美食"></a>美食</h3><ul>
-<li>道顿堀螃蟹三吃</li>
-</ul>
-<h1 id="Day4"><a href="#Day4" class="headerlink" title="Day4"></a>Day4</h1><h2 id="大阪-京都"><a href="#大阪-京都" class="headerlink" title="大阪-京都"></a>大阪-京都</h2><h1 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h1><h2 id="京都"><a href="#京都" class="headerlink" title="京都"></a>京都</h2><h1 id="Day6"><a href="#Day6" class="headerlink" title="Day6"></a>Day6</h1><h2 id="京都-奈良-大阪"><a href="#京都-奈良-大阪" class="headerlink" title="京都-奈良-大阪"></a>京都-奈良-大阪</h2><h3 id="游玩-1"><a href="#游玩-1" class="headerlink" title="游玩"></a>游玩</h3><ul>
-<li>奈良公園</li>
-<li>春日大社</li>
-<li>東大寺 -&gt;二月堂-&gt;三月堂 到若草山</li>
-</ul>
-<h3 id="美食-1"><a href="#美食-1" class="headerlink" title="美食"></a>美食</h3><ul>
-<li>志津香釜飯(靠近奈良国立博物馆)</li>
-</ul>
-<h1 id="Day7"><a href="#Day7" class="headerlink" title="Day7"></a>Day7</h1><h2 id="大阪-3"><a href="#大阪-3" class="headerlink" title="大阪"></a>大阪</h2>]]></content>
-      <tags>
-        <tag>Travel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>观察者与发布订阅</title>
-    <url>/2021/12/09/Observe/</url>
-    <content><![CDATA[<p>用每个互联网工作者都能看懂的栗子说明发布订阅与观察者区别</p>
-<span id="more"></span>
-
-<h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><!-- more -->
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observe</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> __message = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="title">on</span>(<span class="params">type, fn</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">this</span>.__message[type] === <span class="string">&quot;undefined&quot;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.__message[type] = [fn];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.__message[type].push(fn);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="title">subscribe</span>(<span class="params">type, args</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">this</span>.__message[type]) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="built_in">this</span>.__message[type].length; i++) &#123;</span><br><span class="line">      <span class="built_in">this</span>.__message[type][i].call(<span class="built_in">this</span>, args);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="title">off</span>(<span class="params">type, fn</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.__message[type] <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">      <span class="keyword">let</span> i = <span class="built_in">this</span>.__message[type].length - <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">for</span> (; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="built_in">this</span>.__message[type][i] === fn &amp;&amp; <span class="built_in">this</span>.__message[type].splice(i, <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Observe.on(<span class="string">&quot;say&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;say&quot;</span>, <span class="string">&quot;123&quot;</span>);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;say&quot;</span>, <span class="string">&quot;321&quot;</span>);</span><br><span class="line"></span><br><span class="line">Observe.on(<span class="string">&quot;hello&quot;</span>, hello);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;</span><br><span class="line">Observe.subscribe(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;hello&quot;</span>);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>);</span><br><span class="line">Observe.off(<span class="string">&quot;hello&quot;</span>, hello);</span><br><span class="line">Observe.subscribe(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<h1 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h1><h2 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 调度中心</span></span><br><span class="line"><span class="keyword">let</span> eventEmitter = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存列表，存放 event 及 fn</span></span><br><span class="line">eventEmitter.list = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅</span></span><br><span class="line">eventEmitter.on = <span class="function"><span class="keyword">function</span> (<span class="params">event, fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _this = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">// 如果对象中没有对应的 event 值，也就是说明没有订阅过，就给 event 创建个缓存列表</span></span><br><span class="line">    <span class="comment">// 如有对象中有相应的 event 值，把 fn 添加到对应 event 的缓存列表里</span></span><br><span class="line">    (_this.list[event] || (_this.list[event] = [])).push(fn);</span><br><span class="line">    <span class="keyword">return</span> _this;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布</span></span><br><span class="line">eventEmitter.emit = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _this = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">// 第一个参数是对应的 event 值，直接用数组的 shift 方法取出</span></span><br><span class="line">    <span class="keyword">let</span> event = [].shift.call(<span class="built_in">arguments</span>),</span><br><span class="line">        fns = [..._this.list[event]];</span><br><span class="line">    <span class="comment">// 如果缓存列表里没有 fn 就返回 false</span></span><br><span class="line">    <span class="keyword">if</span> (!fns || fns.length === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历 event 值对应的缓存列表，依次执行 fn</span></span><br><span class="line">    fns.forEach(<span class="function"><span class="params">fn</span> =&gt;</span> &#123;</span><br><span class="line">        fn.apply(_this, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> _this;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="调用-1"><a href="#调用-1" class="headerlink" title="调用"></a>调用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">user1</span> (<span class="params">content</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户1订阅了:&#x27;</span>, content);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">user2</span> (<span class="params">content</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户2订阅了:&#x27;</span>, content);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅</span></span><br><span class="line">eventEmitter.on(<span class="string">&#x27;article&#x27;</span>, user1);</span><br><span class="line">eventEmitter.on(<span class="string">&#x27;article&#x27;</span>, user2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布</span></span><br><span class="line">eventEmitter.emit(<span class="string">&#x27;article&#x27;</span>, <span class="string">&#x27;Javascript 发布-订阅模式&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>网上关于两者区别说的已经很多了，结合我自己的思考，举个栗子总结一下。平时开发中与测试打交道是不可避免的，下面就两种场景分析一下</p>
-<h2 id="观察者"><a href="#观察者" class="headerlink" title="观察者"></a>观察者</h2><p>开发者直接对接测试，测试有发现问题直接通知给开发者。</p>
-<ul>
-<li>优点：测试发现一个bug就通知一遍开发，响应及时</li>
-<li>缺点：开发与测试耦合在一起，如果开发请假，测试就不好通知，因此开发与测试需同时引入</li>
-</ul>
-<h2 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h2><p>有一套BUG单系统，测试发现问题提BUG单，开发者去系统中订阅派发给自己的BUG单。</p>
-<ul>
-<li>优点：不管是开发请假还是测试请假，系统都在，双方都可以在BUG单系统上执行自己的操作。</li>
-<li>缺点：同时要维护一套BUG单系统，增加了成本</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一些React使用的例子</title>
-    <url>/2022/03/25/ReactDemos/</url>
-    <content><![CDATA[<p>React一些功能的使用方式</p>
-<span id="more"></span>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p>ref有三种使用方式</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">this</span>.objRef = React.createRef() <span class="comment">// create ref使用</span></span><br><span class="line"><span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// console.log(`span1: $&#123;this.refs.ref1.textContent&#125;`)</span></span><br><span class="line">    <span class="comment">// console.log(`span2: $&#123;this.ref2.textContent&#125;`)</span></span><br><span class="line">    <span class="comment">// console.log(`span3: $&#123;this.ref3.current.textContent&#125;`)</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.refs.stringRef.textContent = <span class="string">&#x27;string ref got&#x27;</span></span><br><span class="line">      <span class="built_in">this</span>.methodRef.textContent = <span class="string">&#x27;method ref got&#x27;</span></span><br><span class="line">      <span class="built_in">this</span>.objRef.current.textContent = <span class="string">&#x27;obj ref got&#x27;</span></span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&quot;stringRef&quot;</span>&gt;</span>span1<span class="tag">&lt;/<span class="name">p</span>&gt;</span> // sting ref使用</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&#123;ele</span> =&gt;</span> (this.methodRef = ele)&#125;&gt;span3<span class="tag">&lt;/<span class="name">p</span>&gt;</span>// function ref使用</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&#123;this.objRef&#125;</span>&gt;</span>span3<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="forward-ref"><a href="#forward-ref" class="headerlink" title="forward ref"></a>forward ref</h2><p>当ref的是一个函数组件</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> TargetComponent = React.forwardRef(<span class="function">(<span class="params">props, ref</span>) =&gt;</span> (</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">ref</span>=<span class="string">&#123;ref&#125;</span> /&gt;</span></span></span><br><span class="line">))</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Comp</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>()</span><br><span class="line">    <span class="built_in">this</span>.ref = React.createRef()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.ref.current.value = <span class="string">&#x27;ref get input&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">TargetComponent</span> <span class="attr">ref</span>=<span class="string">&#123;this.ref&#125;</span> /&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>SourceMap</title>
-    <url>/2021/12/06/SourceMap/</url>
-    <content><![CDATA[<p><strong><code>source map</code>是为了解决即使打包过后的代码，也可以找到具体的报错位置，使我们的<code>debug</code>代码变得更轻松</strong></p>
-<span id="more"></span>
-
-<h1 id="Webpack中的配置"><a href="#Webpack中的配置" class="headerlink" title="Webpack中的配置"></a>Webpack中的配置</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;   </span><br><span class="line">    <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,  </span><br><span class="line">    <span class="attr">output</span>: &#123;      </span><br><span class="line">        <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,      </span><br><span class="line">        <span class="attr">path</span>: path.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>)  </span><br><span class="line">    &#125;,  </span><br><span class="line">    <span class="attr">devtool</span>: <span class="string">&quot;source-map&quot;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>其中devtool有20多种不同取值，分别生成不同类型<code>Source Map</code>,主要有以下几种</p>
-<ul>
-<li><code>source-map</code>：外部。可以查看错误代码准确信息和源代码的错误位置。</li>
-<li><code>inline-source-map</code>：内联。只生成一个内联 <code>Source Map</code>，可以查看错误代码准确信息和源代码的错误位置</li>
-<li><code>hidden-source-map</code>：外部。可以查看错误代码准确信息，但不能追踪源代码错误，只能提示到构建后代码的错误位置。</li>
-<li><code>eval-source-map</code>：内联。每一个文件都生成对应的 <code>Source Map</code>，都在 <code>eval</code> 中，可以查看错误代码准确信息 和 源代码的错误位置。</li>
-<li><code>nosources-source-map</code>：外部。可以查看错误代码错误原因，但不能查看错误代码准确信息，并且没有任何源代码信息。</li>
-<li><code>cheap-source-map</code>：外部。可以查看错误代码准确信息和源代码的错误位置，只能把错误精确到整行，忽略列。</li>
-<li><code>cheap-module-source-map</code>：外部。可以错误代码准确信息和源代码的错误位置，<code>module</code> 会加入 <code>loader</code> 的 <code>Source Map</code>。</li>
-</ul>
-<p>内联和外部的区别：</p>
-<ol>
-<li>外部生成了文件（.map），内联没有。</li>
-<li>内联构建速度更快。</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>测试环境用<code>source-map</code> &#x3D;&gt; <code>cheap-module-souce-map</code><br>正式环境用<code>nosources-source-map</code>&#x3D;&gt;<code>hidden-source-map</code></p>
-<h1 id="map文件解构"><a href="#map文件解构" class="headerlink" title=".map文件解构"></a>.map文件解构</h1><p>下面是一个<code>bundle.js</code>文件生成的<code>.map</code>文件</p>
-<p>原始文件</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
-
-<p>打包后的文件 </p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/******/</span></span><br><span class="line">(<span class="function">() =&gt;</span> &#123; <span class="comment">// webpackBootstrap   </span></span><br><span class="line">    <span class="keyword">var</span> __webpack_exports__ = &#123;&#125;;  </span><br><span class="line">    <span class="comment">/*!**********************!*\    </span></span><br><span class="line"><span class="comment">      !*** ./src/index.js ***!     </span></span><br><span class="line"><span class="comment">      \**********************/</span>   </span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span>;   </span><br><span class="line">    <span class="built_in">console</span>.log(a);   </span><br><span class="line">    <span class="comment">/******/</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">//# sourceMappingURL=bundle.js.map</span></span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">    <span class="string">&quot;version&quot;</span>: <span class="number">3</span>,  <span class="comment">// sourceMap版本</span></span><br><span class="line">    <span class="string">&quot;sources&quot;</span>: [  <span class="comment">// 转换前的文件   </span></span><br><span class="line">        <span class="string">&quot;webpack://learn-source-map/./src/index.js&quot;</span>   </span><br><span class="line">    ],  </span><br><span class="line">    <span class="string">&quot;names&quot;</span>: [],  <span class="comment">// 转换钱所有变量名  </span></span><br><span class="line">    <span class="string">&quot;mappings&quot;</span>: <span class="string">&quot;AAAA;AACA,c&quot;</span>,   <span class="comment">// 记录位置信息的字符串</span></span><br><span class="line">    <span class="string">&quot;file&quot;</span>: <span class="string">&quot;bundle.js&quot;</span>,  <span class="comment">// 转换后的文件名</span></span><br><span class="line">    <span class="string">&quot;sourcesContent&quot;</span>: [ <span class="comment">// 转换前文件原始内容    </span></span><br><span class="line">        <span class="string">&quot;var a = 1;\r\nconsole.log(a);&quot;</span>  </span><br><span class="line">    ],   </span><br><span class="line">    <span class="string">&quot;sourceRoot&quot;</span>: <span class="string">&quot;&quot;</span> <span class="comment">// 转换钱文件的所在目录</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>mappings</code>要单独拿出来理解一下</p>
-<ul>
-<li><code>；</code>表示不同行，每个分号都表示转换后源码的一行 （以此为例就是分了两行）</li>
-<li><code>，</code>表示对应转换后源码的一个位置(以此为例就是AAACA,c表示<code>console</code>和<code>log(a)</code>)</li>
-<li>每个字母表示不同的位置转换(每个字母表示不同意思，最多由5个字母组成）<ol>
-<li>第一位，表示这个位置在（转换后的代码的）的第几列。</li>
-<li>第二位，表示这个位置属于 sources 属性中的哪一个文件。</li>
-<li>第三位，表示这个位置属于转换前代码的第几行。</li>
-<li>第四位，表示这个位置属于转换前代码的第几列。</li>
-<li>第五位，表示这个位置属于 names 属性中的哪一个变量。</li>
-</ol>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>React源码中的片段</title>
-    <url>/2022/03/24/ReactCodeSlice/</url>
-    <content><![CDATA[<p>一些读 react 源码的时候发现的一些实用的代码片段</p>
-<span id="more"></span>
-
-
-<p>读取函数中除了前两个参数的剩余参数</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElement</span>(<span class="params">type, config, children</span>) </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">const</span> childrenLength = <span class="built_in">arguments</span>.length - <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">if</span> (childrenLength === <span class="number">1</span>) &#123;</span><br><span class="line">    props.children = children;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childrenLength &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> childArray = <span class="built_in">Array</span>(childrenLength);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; childrenLength; i++) &#123;</span><br><span class="line">      childArray[i] = <span class="built_in">arguments</span>[i + <span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    props.children = childArray;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>BUg集合</title>
-    <url>/2021/12/30/bugCollection/</url>
-    <content><![CDATA[<p>这里用来记载一些平时开发会遇到的坑，持续更新</p>
-<span id="more"></span>
-
-<h1 id="zorro-antd-的虚拟滚动列表乱序问题"><a href="#zorro-antd-的虚拟滚动列表乱序问题" class="headerlink" title="zorro antd 的虚拟滚动列表乱序问题"></a>zorro antd 的虚拟滚动列表乱序问题</h1><p>使用了 nzVirtualScroll 虚拟滚动，发现切换数据展示时数据会乱序<br>只要在每次赋值之前将列表清空即可</p>
-<h1 id="pre-标签自动换行问题"><a href="#pre-标签自动换行问题" class="headerlink" title="pre 标签自动换行问题"></a>pre 标签自动换行问题</h1><p>pre 标签默认文字过长不会换行</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="attribute">white-space</span>: pre-wrap; <span class="comment">/* css3.0 */</span></span><br><span class="line"><span class="attribute">white-space</span>: -moz-pre-wrap; <span class="comment">/* Firefox */</span></span><br><span class="line"><span class="attribute">white-space</span>: -pre-wrap; <span class="comment">/* Opera 4-6 */</span></span><br><span class="line"><span class="attribute">white-space</span>: -o-pre-wrap; <span class="comment">/* Opera 7 */</span></span><br><span class="line"><span class="attribute">word-wrap</span>: break-word; <span class="comment">/* Internet Explorer 5.5+ */</span></span><br></pre></td></tr></table></figure>
-
-<p>加上以上代码即可</p>
-]]></content>
-      <tags>
-        <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记录</title>
-    <url>/2021/12/07/%E7%BD%97%E6%9B%BC%E7%BD%97%E5%85%B0/</url>
-    <content><![CDATA[<p><strong>成功只是一时的<br>失败却是主旋律<br>但是如何面对失败<br>却把人分成了不同的样子<br>有的人会被失败击垮<br>有的人能够不断的爬起来继续向前<br>我想真正的成熟应该并不是追求完美<br>而是直面自己的缺憾<br>这才是生活的本质<br>罗曼罗兰说过<br>”这个世界上只有一种真正的英雄主义，那就是认清生活的真相，并且任然热爱它“</strong><br>            <div style="text-align:right;"><em><strong>— 贺炜2014年世界杯送别西班牙时的解说</strong></em></p>
-</div>
-
-
-]]></content>
-      <tags>
-        <tag>Notes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>图片裁剪</title>
     <url>/2018/02/02/TailorPic/</url>
     <content><![CDATA[<p> 图片裁剪上传功能通用的方法(基于原生 JS，不需要引入任何框架)</p>
@@ -396,24 +416,6 @@
 ]]></content>
       <tags>
         <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>前端小技巧</title>
-    <url>/2022/04/25/littleTip/</url>
-    <content><![CDATA[<p>记录一些看到的小技巧(虽然可能没用~)，</p>
-<span id="more"></span>
-
-<h2 id="indexOf-按位操作简化"><a href="#indexOf-按位操作简化" class="headerlink" title="indexOf 按位操作简化"></a>indexOf 按位操作简化</h2><p>避免写很多的&gt;-1</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//longhand</span></span><br><span class="line"><span class="keyword">if</span> (arr.indexOf(item) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="comment">// item found</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (arr.indexOf(item) === -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="comment">// item not found</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//shorthand</span></span><br><span class="line"><span class="keyword">if</span> (~arr.indexOf(item)) &#123;</span><br><span class="line">  <span class="comment">// item found</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!~arr.indexOf(item)) &#123;</span><br><span class="line">  <span class="comment">// item not found</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="简短函数调用"><a href="#简短函数调用" class="headerlink" title="简短函数调用"></a>简短函数调用</h2><p>有时候会根据一个函数的返回值判断执行某个函数（比如每次提交表单的时候，会根据<code>validateData</code>函数判断是否通过）</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Longhand</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;test1&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;test2&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> test3 = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (test3 == <span class="number">1</span>) &#123;</span><br><span class="line">  test1();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  test2();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Shorthand</span></span><br><span class="line">(test3 === <span class="number">1</span> ? test1 : test2)();</span><br></pre></td></tr></table></figure>
-
-<h2 id="双按位操作取整数"><a href="#双按位操作取整数" class="headerlink" title="双按位操作取整数"></a>双按位操作取整数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Longhand</span></span><br><span class="line"><span class="built_in">Math</span>.floor(<span class="number">1.9</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// Shorthand</span></span><br><span class="line">~~<span class="number">1.9</span>; <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>js</tag>
       </tags>
   </entry>
 </search>
