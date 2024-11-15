@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <title>
+    微前端嵌入项目的流程 |
+    
+    fanjunsheng&#39;s Blog
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-micro-app" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    微前端嵌入项目的流程
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2024/11/15/micro-app/" class="article-date">
+  <time datetime="2024-11-15T07:36:32.000Z" itemprop="datePublished">2024-11-15</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h3 id="代账项目引入-microapp-流程"><a href="#代账项目引入-microapp-流程" class="headerlink" title="代账项目引入 microapp 流程"></a>代账项目引入 microapp 流程</h3><span id="more"></span>
+
+<p>在原 iframe 的地方使用 microapp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import microApp from &#x27;@micro-zoe/micro-app&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;micro-app</span><br><span class="line">    // @ts-ignore</span><br><span class="line">    name=&#123;&#x27;my-app&#x27;&#125;</span><br><span class="line">    r-show=&#123;xcUrlNew&#125;</span><br><span class="line">    url=&#123;xcUrlNew&#125;</span><br><span class="line">    style=&#123;&#123; height: &#x27;100%&#x27; &#125;&#125; &gt;&lt;/micro-app&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后页面就会出现<code>&lt;micro-app&gt;</code>标签,挂在的就是原<code>iframe</code>的页面</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p><code>microapp</code> 的 url 不能是跨域的，如果不在一个域名需要解决跨域资源请求的问题</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>页面打开后，大概率是白屏报错的状态,下面就是需要解决的问题</p>
+<h4 id="1-window-YZF-GlobalData-是空的"><a href="#1-window-YZF-GlobalData-是空的" class="headerlink" title="1. window.YZF.GlobalData 是空的"></a>1. <code>window.YZF.GlobalData</code> 是空的</h4><p>原因是在<code>common.min.js</code>脚本中，有一段代码<br><img src="/images/clip-img2.png" width="200" style="margin:0"/><br>将<code>window.YZF.GlobalData</code> 设置为空了，然后在另一个地方<br><img src="/images/clip-img1.png" width="800" style="margin:0"/><br>将<code>window.YZF.GlobalData</code> 设置为 <code>window.parent.YZF.GlobalData || &#123;&#125;</code></p>
+<p>现在因为已经没有<code>window.parent</code>了，所以<code>window.YZF.GlobalData</code> 就为空了</p>
+<p>现在<code>common.min.js</code>脚本的平级加了<code>common.microapp.min.js</code>，将<code>html</code>文件中的<code>common.min.js</code>替换为<code>common.microapp.min.js</code>就可以</p>
+<h4 id="2-页面样式错乱"><a href="#2-页面样式错乱" class="headerlink" title="2. 页面样式错乱"></a>2. 页面样式错乱</h4><p>造成这个问题的原因可能有如下四个：</p>
+<ul>
+<li><p><code>$(&#39;body&#39;)</code>或者<code>$(&#39;document&#39;)</code>找不到，所以需要修改<code>$(&#39;body&#39;)</code>或<code>$(&#39;document&#39;)</code>为<code>$(&#39;micro-app-body&#39;)</code></p>
+</li>
+<li><p>所有<code>absolute</code>的元素可能定位不对，需要修改为<code>fixed</code></p>
+</li>
+<li><p>页面中引用的<code>fintax-web</code>中的组件使用了<code>tailwind-css</code>，在<code>microapp</code>中无法生效，需要依据情况手动修改</p>
+</li>
+<li><p>页面元素的主题色不生效，需要自己在<code>css</code>文件中设置（因为微前端为了样式隔离，会在<code>css</code>外侧包一层<code>micro-app-body</code>）</p>
+</li>
+</ul>
+<h4 id="3-页面中各种脚本找不到"><a href="#3-页面中各种脚本找不到" class="headerlink" title="3. 页面中各种脚本找不到"></a>3. 页面中各种脚本找不到</h4><p>下面将一些需要特殊处理的脚本和公共的资源放入 cos 中以便使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 日历组件</span><br><span class="line">&lt;script</span><br><span class="line">  type=&quot;text/javascript&quot;</span><br><span class="line">  src=&quot;https://fintax-web-1257122416.cos.ap-shanghai.myqcloud.com/static-resource/subaccount-20241108/js/%08salary_new/mCalendar.js&quot;</span><br><span class="line">&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// 打印设置</span><br><span class="line">&lt;script</span><br><span class="line">  src=&quot;https://fintax-web-1257122416.cos.ap-shanghai.myqcloud.com/static-resource/subaccount-20241108/js/%08salary_new/common_dayin_modal.67.min.js&quot;</span><br><span class="line">  type=&quot;text/javascript&quot;</span><br><span class="line">&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// 导入</span><br><span class="line">&lt;script</span><br><span class="line">  type=&quot;text/javascript&quot;</span><br><span class="line">  src=&quot;https://fintax-web-1257122416.cos.ap-shanghai.myqcloud.com/static-resource/subaccount-20241108/js/%08salary_new/ajaxfileupload.js&quot;</span><br><span class="line">&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// layer-ui</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;https://fintax-web-1257122416.cos.ap-shanghai.myqcloud.com/static-resource/subaccount-20241108/js/%08salary_new/layer/layer.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://fintax-web-1257122416.cos.ap-shanghai.myqcloud.com/static-resource/subaccount-20241108/js/%08salary_new/layer/skin/yzf/layer.css&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 为了解决micro-app拿不到window.Api的问题，所以自己写一份old-api，将Api对象挂到window上 --&gt;</span><br><span class="line">&lt;script src=&quot;https://fintax-web-1257122416.cos.ap-shanghai.myqcloud.com/static-resource/subaccount-20241108/js/%08salary_new/old-api.min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-在原生页面中通过plugin使用了react组件，但是组件不生效的问题"><a href="#4-在原生页面中通过plugin使用了react组件，但是组件不生效的问题" class="headerlink" title="4.在原生页面中通过plugin使用了react组件，但是组件不生效的问题"></a>4.在原生页面中通过<code>plugin</code>使用了<code>react</code>组件，但是组件不生效的问题</h4><p>需要在<code>page-plugins.js</code>文件中，调用新的<code>createOnePage</code>方法匹配对应的插件。<br>同时在新拷贝出来的插件中，需要将<code>window</code>或者一些全局变量按照显示的调用重新编写一份</p>
+<h4 id="5-页面中引入的脚本找到了，但是没生效"><a href="#5-页面中引入的脚本找到了，但是没生效" class="headerlink" title="5.页面中引入的脚本找到了，但是没生效"></a>5.页面中引入的脚本找到了，但是没生效</h4><p>判断是引用时机的问题，将脚本位置前移可以解决</p>
+<h4 id="6-微前端的window对象被框架改造成了代理对象，需要使用的话用Object-assign的方式结构"><a href="#6-微前端的window对象被框架改造成了代理对象，需要使用的话用Object-assign的方式结构" class="headerlink" title="6.微前端的window对象被框架改造成了代理对象，需要使用的话用Object.assign的方式结构"></a>6.微前端的<code>window</code>对象被框架改造成了代理对象，需要使用的话用<code>Object.assign</code>的方式结构</h4><h4 id="7-页面中原本inline的元素变成block导致页面样式出问题"><a href="#7-页面中原本inline的元素变成block导致页面样式出问题" class="headerlink" title="7.页面中原本inline的元素变成block导致页面样式出问题"></a>7.页面中原本<code>inline</code>的元素变成<code>block</code>导致页面样式出问题</h4><p><code>jquery</code>的 show 方法会缓存之前的的 display，所以一开始就设置为<code>display:none</code>就会导致这个问题，不在 css 中设置，而放在 js 中用 hide 代替</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>微前端改造主要的问题是原来是用<code>iframe</code>引入的页面，相当于是一个浏览器去单独请求的页面，所以很多执行的机制是完整，通过项目的形式去走的流程，改成微前端后，页面是在一个沙箱中，数据和样式都是隔离的，很多子项目的流程不走了，所以造成了很多问题，所以需要手动去解决这些问题。</p>
+<h4 id="ps：-微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考microapp的官方文档"><a href="#ps：-微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考microapp的官方文档" class="headerlink" title="ps： 微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考microapp的官方文档"></a>ps： 微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考<code>microapp</code>的官方文档</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/11/15/micro-app/" data-id="cm3ifx1yf000o6o4j9n98hgsh" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  
+  <a href="/2023/03/10/BackgroundAttachment/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">用纯CSS实现滚动阴影</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank">cross</a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="fanjunsheng&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>
