@@ -73,7 +73,10 @@
 <p>在原 iframe 的地方使用 microapp</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import microApp from &#x27;@micro-zoe/micro-app&#x27;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;micro-app</span><br><span class="line">    // @ts-ignore</span><br><span class="line">    name=&#123;&#x27;my-app&#x27;&#125;</span><br><span class="line">    r-show=&#123;xcUrlNew&#125;</span><br><span class="line">    url=&#123;xcUrlNew&#125;</span><br><span class="line">    style=&#123;&#123; height: &#x27;100%&#x27; &#125;&#125; &gt;&lt;/micro-app&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;micro-app</span><br><span class="line">    // @ts-ignore</span><br><span class="line">    name=&#123;&#x27;salary-microApp&#x27;&#125;</span><br><span class="line">    r-show=&#123;xcUrlNew&#125;</span><br><span class="line">    url=&#123;xcUrlNew&#125;</span><br><span class="line">    style=&#123;&#123; height: &#x27;100%&#x27; &#125;&#125; &gt;&lt;/micro-app&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将需要开启的薪酬类型加到数组中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 1： 正常工资</span><br><span class="line">export const supportMicroAppIds = [1]</span><br></pre></td></tr></table></figure>
 
 <p>然后页面就会出现<code>&lt;micro-app&gt;</code>标签,挂在的就是原<code>iframe</code>的页面</p>
 <h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p><code>microapp</code> 的 url 不能是跨域的，如果不在一个域名需要解决跨域资源请求的问题</p>
@@ -109,6 +112,7 @@
 
 <p>这样就要注意，文件对应的js就要在<code>utils.microApp.min.js</code>之后引入</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>微前端改造主要的问题是原来是用<code>iframe</code>引入的页面，相当于是一个浏览器去单独请求的页面，所以很多执行的机制是完整，通过项目的形式去走的流程，改成微前端后，页面是在一个沙箱中，数据和样式都是隔离的，很多子项目的流程不走了，所以造成了很多问题，所以需要手动去解决这些问题。</p>
+<p><code>micro-app</code>没有使用主流的<code>single-spa</code>，而是用了<code>webComponent</code>的思想,不需要子应用修改渲染逻辑并且暴露出来(<em><code>single-spa</code>的核心就是定义了一套协议，主要就包括主应用的配置信息和子应用的生命周期函数。</em>)</p>
 <img src="/images/性能对比.png" width="800" style="margin:0"/>
 大致对比一下，在3秒内打开的正常工资，微前端会快200ms左右
 
@@ -117,7 +121,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/11/15/micro-app/" data-id="cm3o5gok2000qjn4jahw32wbo" class="article-share-link">
+      <a data-url="http://example.com/2024/11/15/micro-app/" data-id="cm3paep7t000myd4jhwcy97nk" class="article-share-link">
         分享
       </a>
       
