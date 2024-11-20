@@ -58,12 +58,14 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;(function ($, $w) &#123;</span><br><span class="line">  //name</span><br><span class="line">  $w.Utils = $w.Utils || &#123;&#125;</span><br><span class="line"></span><br><span class="line">  //url</span><br><span class="line">  $w.Utils.url = $w.Utils.url || &#123;&#125;</span><br><span class="line">  $.extend(true, $w.Utils.url, &#123;</span><br><span class="line">    getUrlParam: function () &#123;</span><br><span class="line">      const param = sessionStorage.getItem(&#x27;/salary_lastest.html&#x27;)</span><br><span class="line">      return param ? JSON.parse(param) : &#123;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)(jQuery, window)</span><br></pre></td></tr></table></figure>
 
 <p>这样就要注意，文件对应的js就要在<code>utils.microApp.min.js</code>之后引入</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>微前端改造主要的问题是原来是用<code>iframe</code>引入的页面，相当于是一个浏览器去单独请求的页面，所以很多执行的机制是完整，通过项目的形式去走的流程，改成微前端后，页面是在一个沙箱中，数据和样式都是隔离的，很多子项目的流程不走了，所以造成了很多问题，所以需要手动去解决这些问题。</p>
-<p><code>micro-app</code>没有使用主流的<code>single-spa</code>，而是用了<code>webComponent</code>的思想,不需要子应用修改渲染逻辑并且暴露出来(<em><code>single-spa</code>的核心就是定义了一套协议，主要就包括主应用的配置信息和子应用的生命周期函数。</em>)</p>
-<img src="/images/性能对比.png" width="800" style="margin:0"/>
-大致对比一下，在3秒内打开的正常工资，微前端会快200ms左右
-
-
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><p>微前端改造主要的问题是原来是用<code>iframe</code>引入的页面，相当于是一个浏览器去单独请求的页面，所以很多执行的机制是完整，通过项目的形式去走的流程，改成微前端后，页面是在一个沙箱中，数据和样式都是隔离的，很多子项目的流程不走了，所以造成了很多问题，所以需要手动去解决这些问题。</p>
+</li>
+<li><p><code>micro-app</code>没有使用主流的<code>single-spa</code>，而是用了<code>webComponent</code>的思想,不需要子应用修改渲染逻辑并且暴露出来(<em><code>single-spa</code>的核心就是定义了一套协议，主要就包括主应用的配置信息和子应用的生命周期函数。</em>)</p>
+</li>
+<li><img src="/images/性能对比.png" width="800" style="margin:0"/>
+大致对比一下，在3秒内打开的正常工资，微前端会快200ms左右</li>
+</ul>
 <h4 id="ps：-微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考microapp的官方文档"><a href="#ps：-微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考microapp的官方文档" class="headerlink" title="ps： 微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考microapp的官方文档"></a>ps： 微前端的路由也有相应的改动，目前并没有遇到相应的需求，如果有需要，可以参考<code>microapp</code>的官方文档</h4>]]></content>
   </entry>
   <entry>
