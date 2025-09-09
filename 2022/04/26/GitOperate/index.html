@@ -82,10 +82,12 @@
 
 <h2 id="merge-的时候合并合并多条-commit-为-1-条"><a href="#merge-的时候合并合并多条-commit-为-1-条" class="headerlink" title="merge 的时候合并合并多条 commit 为 1 条"></a>merge 的时候合并合并多条 commit 为 1 条</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge --squash &#123;commit id&#125;</span><br></pre></td></tr></table></figure>
 
+
+<h2 id="根据时间查看git代码的提交量-下面是3个月的提交量"><a href="#根据时间查看git代码的提交量-下面是3个月的提交量" class="headerlink" title="根据时间查看git代码的提交量(下面是3个月的提交量)"></a>根据时间查看git代码的提交量(下面是3个月的提交量)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">git log --since=&quot;3 month ago&quot; --pretty=&quot;%aN&quot; --numstat | awk &#x27;</span><br><span class="line">BEGIN &#123;</span><br><span class="line">    # 初始化变量</span><br><span class="line">    current_author = &quot;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">    if (NF == 1) &#123;</span><br><span class="line">        # 这一行是作者名</span><br><span class="line">        current_author = $1;</span><br><span class="line">    &#125; else if (NF &gt;= 3 &amp;&amp; $1 ~ /^[0-9]+$/) &#123;</span><br><span class="line">        # 这一行是数字统计（添加行数、删除行数、文件名）</span><br><span class="line">        authors_add[current_author] += $1;</span><br><span class="line">        authors_subs[current_author] += $2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line">    printf &quot;开发者代码贡献统计:\n&quot;;</span><br><span class="line">    for (author in authors_add) &#123;</span><br><span class="line">        net = authors_add[author] - authors_subs[author];</span><br><span class="line">        printf &quot;  %s: +%s -%s (净增%s)\n&quot;, author, authors_add[author], authors_subs[author], net;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&#x27;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/04/26/GitOperate/" data-id="cm3paq65w00075a4j9mpgf97p" class="article-share-link">
+      <a data-url="http://example.com/2022/04/26/GitOperate/" data-id="cmfcd2ysh0007vb4jdtyi7w1i" class="article-share-link">
         分享
       </a>
       
@@ -128,7 +130,7 @@
     <footer class="footer">
   <div class="outer">
     <ul class="list-inline">
-      <li>fanjunsheng&#39;s Blog &copy; 2024</li>
+      <li>fanjunsheng&#39;s Blog &copy; 2025</li>
       
         <li>
           
